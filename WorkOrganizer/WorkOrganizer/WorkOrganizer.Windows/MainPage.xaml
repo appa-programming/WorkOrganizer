@@ -1,0 +1,55 @@
+﻿<Page x:Class="WorkOrganizer.MainPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:local="using:WorkOrganizer"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      mc:Ignorable="d">
+
+    <Grid Name="LayoutRoot"
+          Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"></RowDefinition>
+            <RowDefinition Height="1*"></RowDefinition>
+            <RowDefinition Height="6*"></RowDefinition>
+            <RowDefinition Height="1*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <TextBlock Name="WorkOrganizer"
+                   Grid.Row="0"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center"
+                   Style="{ ThemeResource HeaderTextBlockStyle }"
+                   FontWeight="Bold">
+            Work Organizer
+        </TextBlock>
+        <DatePicker Name="DatePickerSelect"
+                    HorizontalAlignment="Center"
+                    Grid.Row="1"
+                    DateChanged="DatePickerSelect_DateChanged"></DatePicker>
+        <Button Name="SwipeToMonth"
+                Grid.Row="1"
+                Click="SwipeToMonth_Click"
+                HorizontalAlignment="Right">
+            "Swipe"
+        </Button>
+        <ScrollViewer Grid.Row="2">
+            <TextBox Name="TextBoxTest"
+                     Text="Hi there!"
+                     Width="700"
+                     TextWrapping="Wrap">
+            </TextBox>
+        </ScrollViewer>
+        <Button Grid.Row="3"
+                HorizontalAlignment="Center"
+                Height="70"
+                Width="200"
+                FontSize="26.667"
+                HorizontalContentAlignment="Center"
+                BorderThickness="5"
+                BorderBrush="White"
+                Background="Black"
+                Click="Button_Click">
+            Add Event
+        </Button>
+    </Grid>
+</Page>
