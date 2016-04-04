@@ -30,7 +30,7 @@ namespace WorkOrganizer
 
         }
 
-        private async void Button_Click(object sender, RoutedEventArgs e)
+        private void Button_Click(object sender, RoutedEventArgs e)
         {
             List<WorkEvent> ListAux = new List<WorkEvent>();
             ListAux.Add(new WorkEvent() { Id = 10 });

@@ -106,12 +106,15 @@
     <!-- A reference to the entire .Net Framework and Windows SDK are automatically included -->
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AuxiliarManagementPage.xaml.cs">
+      <DependentUpon>AuxiliarManagementPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="WorkAnalyzer.xaml.cs">
-      <DependentUpon>WorkAnalyzer.xaml</DependentUpon>
+    <Compile Include="WorkAnalyzerPage.xaml.cs">
+      <DependentUpon>WorkAnalyzerPage.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -129,11 +132,15 @@
     <Content Include="README_FIRST.txt" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="AuxiliarManagementPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="WorkAnalyzer.xaml">
+    <Page Include="WorkAnalyzerPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

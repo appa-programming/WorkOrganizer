@@ -47,5 +47,10 @@ namespace WorkOrganizer
         {
 
         }
+
+        private void SwipeToManagement_Click(object sender, RoutedEventArgs e)
+        {
+            Frame.Navigate(typeof(AuxiliarManagementPage));
+        }
     }
 }

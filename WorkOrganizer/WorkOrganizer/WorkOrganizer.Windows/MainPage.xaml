@@ -30,7 +30,7 @@
                 Grid.Row="1"
                 Click="SwipeToMonth_Click"
                 HorizontalAlignment="Right">
-            "Swipe"
+            "Swipe Right"
         </Button>
         <ScrollViewer Grid.Row="2">
             <TextBox Name="TextBoxTest"
