@@ -42,7 +42,7 @@ namespace WorkOrganizer
                 }
                 return true;
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 return false;
             }
@@ -69,15 +69,21 @@ namespace WorkOrganizer
         {
             try
             {
-                var JsonSerializer = new DataContractJsonSerializer(typeof(IEnumerable<WorkEvent>));
+                var JsonSerializer = new DataContractJsonSerializer(typeof(IEnumerable<T>));
                 var MyStream = await ApplicationData.Current.LocalFolder.OpenStreamForReadAsync(fileName);
-
+                MyStream.Flush();
+                MyStream.Position = 0;
                 return (IEnumerable<T>)JsonSerializer.ReadObject(MyStream);
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 return null;
             }
+        }
+
+        public static async Task<bool> ExistsFile(string fileName)
+        {
+            return await ApplicationData.Current.LocalFolder.TryGetItemAsync(fileName) != null;
         }
     }
 }

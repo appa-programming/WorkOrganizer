@@ -116,6 +116,9 @@
     <Compile Include="WorkAnalyzerPage.xaml.cs">
       <DependentUpon>WorkAnalyzerPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="WorkEventPage.xaml.cs">
+      <DependentUpon>WorkEventPage.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
@@ -141,6 +144,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="WorkAnalyzerPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WorkEventPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

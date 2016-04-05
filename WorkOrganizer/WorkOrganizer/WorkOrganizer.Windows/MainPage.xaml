@@ -39,7 +39,8 @@
                      TextWrapping="Wrap">
             </TextBox>
         </ScrollViewer>
-        <Button Grid.Row="3"
+        <Button Name="ButtonAddEvent"
+                Grid.Row="3"
                 HorizontalAlignment="Center"
                 Height="70"
                 Width="200"
@@ -48,8 +49,9 @@
                 BorderThickness="5"
                 BorderBrush="White"
                 Background="Black"
-                Click="Button_Click">
+                Click="ButtonAddEvent_Click">
             Add Event
         </Button>
+        <TimePicker Name="TimePicker" ClockIdentifier="24HourClock"></TimePicker>
     </Grid>
 </Page>

@@ -27,15 +27,15 @@ namespace WorkOrganizer
         public MainPage()
         {
             this.InitializeComponent();
-
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void ButtonAddEvent_Click(object sender, RoutedEventArgs e)
         {
             List<WorkEvent> ListAux = new List<WorkEvent>();
-            ListAux.Add(new WorkEvent() { Id = 10 });
+            ListAux.Add(new WorkEvent());
             //TextBoxTest.Text = (await IOHandler.WriteJsonAsync("file123.xml", ListAux)).ToString();
             TextBoxTest.Text = "" + App.DB.Houses.Count() + App.DB.Owners.Count();
+            Frame.Navigate(typeof(WorkEventPage), DatePickerSelect.Date.DateTime);
         }
 
         private async void DatePickerSelect_DateChanged(object sender, DatePickerValueChangedEventArgs e)
@@ -47,7 +47,7 @@ namespace WorkOrganizer
                 List<WorkEvent> Events = (await IOHandler.ReadJsonAsync<WorkEvent>("file123.xml")).ToList();
                 for (int i = 0; i < Events.Count(); i++)
                 {
-                    TextBoxTest.Text += Events[i].Id;
+                    TextBoxTest.Text += Events[i].Note;
                     if (i < Events.Count - 1)
                         TextBoxTest.Text += "\n";
                 }

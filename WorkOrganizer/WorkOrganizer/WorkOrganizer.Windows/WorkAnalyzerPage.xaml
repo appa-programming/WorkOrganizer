@@ -50,7 +50,7 @@
                          GroupName="RadioGroupPickStyle"
                          Grid.Row="2"
                          IsChecked="True"
-                         Checked="RadioButton_Checked">People</RadioButton>
+                         Checked="RadioButton_Checked">Owners</RadioButton>
             <RadioButton Name="RadioButtonHouse"
                          GroupName="RadioGroupPickStyle"
                          Grid.Row="2"
