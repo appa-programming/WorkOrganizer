@@ -1,5 +1,5 @@
 ﻿<Page
-    x:Class="WorkOrganizer.OwnerManagementPage"
+    x:Class="WorkOrganizer.OwnerPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:WorkOrganizer"
@@ -10,9 +10,11 @@
     <Grid Name="LayoutRoot"
           Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <Grid.RowDefinitions>
+            <!--Total = 9-->
             <RowDefinition Height="1*"></RowDefinition>
             <RowDefinition Height="1*"></RowDefinition>
-            <RowDefinition Height="6*"></RowDefinition>
+            <RowDefinition Height="4*"></RowDefinition>
+            <RowDefinition Height="1*"></RowDefinition>
             <RowDefinition Height="1*"></RowDefinition>
         </Grid.RowDefinitions>
         <TextBlock Name="WorkOrganizer"
@@ -28,25 +30,30 @@
                 VerticalAlignment="Center"
                 Click="ButtonGoBack_Click"
                 Grid.Row="1">
-            "Swipe Back"
+            Back
         </Button>
-        <TextBlock Name="TitleOwners"
-                   Style="{ StaticResource TitleTextBlockStyle }"
+        <StackPanel Orientation="Vertical"
+                    VerticalAlignment="Center"
+                    Grid.Row="2">
+            <TextBlock x:Name="TextName"
+                       HorizontalAlignment="Center"
+                       Style="{ StaticResource MyTextBoxStyle }">Name:</TextBlock>
+            <TextBox x:Name="TextBoxName"
+                     VerticalAlignment="Center"
+                     TextWrapping="Wrap"
+                     Width="400"
+                     ></TextBox>
+        </StackPanel>
+        <TextBlock Name="TextError"
+                   Style="{ StaticResource MyTextBoxStyle }"
+                   TextWrapping="WrapWholeWords"
                    HorizontalAlignment="Center"
-                   VerticalAlignment="Center"
-                   FontSize="26.667"
-                   Grid.Row="1">Owners</TextBlock>
-        <Grid Grid.Row="2">
-            <ProgressRing Name="ProgressRing"
-                          Visibility="Visible"></ProgressRing>
-            <ScrollViewer Name="ScrollOwners"
-                          Visibility="Collapsed"
-                          VerticalScrollBarVisibility="Auto">
-                <StackPanel Name="StackOwners"
-                            Orientation="Vertical"></StackPanel>
-            </ScrollViewer>
-        </Grid>
-        <Button Name="ButtonAddOwner"
+                   Foreground="Red"
+                   FontWeight="Bold"
+                   Visibility="Collapsed"
+                   Grid.Row="3"></TextBlock>
+        <Button Name="ButtonCreateOrEditOwner"
+                Grid.Row="4"
                 HorizontalAlignment="Center"
                 Height="70"
                 Width="200"
@@ -55,7 +62,8 @@
                 BorderThickness="5"
                 BorderBrush="White"
                 Background="Black"
-                Grid.Row="3"
-                Click="ButtonAddOwner_Click">Add Owner</Button>
+                Click="ButtonCreateOrEditOwner_Click">
+            Create Owner
+        </Button>
     </Grid>
 </Page>

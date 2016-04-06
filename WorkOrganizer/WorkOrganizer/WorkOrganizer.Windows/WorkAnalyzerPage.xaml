@@ -46,7 +46,7 @@
                     Grid.Row="2"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center">
-            <RadioButton Name="RadioButtonPeople"
+            <RadioButton Name="RadioButtonOwner"
                          GroupName="RadioGroupPickStyle"
                          Grid.Row="2"
                          IsChecked="True"
@@ -57,6 +57,15 @@
                          Margin="0,20,0,0"
                          Checked="RadioButton_Checked">Houses</RadioButton>
         </StackPanel>
-        
+        <Grid Grid.Row="3" Margin="0,20,0,0">
+            <ProgressRing Name="ProgressRing"
+                          Visibility="Visible"></ProgressRing>
+            <ScrollViewer Name="ScrollSummary"
+                          Visibility="Collapsed"
+                          VerticalScrollBarVisibility="Auto">
+                <StackPanel Name="StackSummary"
+                            Orientation="Vertical"></StackPanel>
+            </ScrollViewer>
+        </Grid>
     </Grid>
 </Page>

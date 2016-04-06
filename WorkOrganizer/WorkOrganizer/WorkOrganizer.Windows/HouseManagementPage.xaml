@@ -41,6 +41,16 @@
                 HorizontalAlignment="Right">
             "Swipe Right"
         </Button>
+        <Grid Grid.Row="2">
+            <ProgressRing Name="ProgressRing"
+                          Visibility="Visible"></ProgressRing>
+            <ScrollViewer Name="ScrollHouses"
+                          Visibility="Collapsed"
+                          VerticalScrollBarVisibility="Auto">
+                <StackPanel Name="StackHouses"
+                            Orientation="Vertical"></StackPanel>
+            </ScrollViewer>
+        </Grid>
         <Button Name="ButtonAddHouse"
                 HorizontalAlignment="Center"
                 Height="70"
@@ -50,6 +60,7 @@
                 BorderThickness="5"
                 BorderBrush="White"
                 Background="Black"
-                Grid.Row="3">Add House</Button>
+                Grid.Row="3"
+                Click="ButtonAddHouse_Click">Add House</Button>
     </Grid>
 </Page>

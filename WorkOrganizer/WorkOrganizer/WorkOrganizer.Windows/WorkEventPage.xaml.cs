@@ -5,10 +5,12 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Data;
+using Windows.UI.Xaml.Documents;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
@@ -60,7 +62,7 @@ namespace WorkOrganizer
             Frame.GoBack();
         }
 
-        private void ButtonCreateOrEditEvent_Click(object sender, RoutedEventArgs e)
+        private async void ButtonCreateOrEditEvent_Click(object sender, RoutedEventArgs e)
         {
             try
             {
@@ -80,7 +82,7 @@ namespace WorkOrganizer
                     if (IsEdit)
                         App.DB.EditWorkEvent(WorkEventOnEdit.Id, we);
                     else
-                        App.DB.SaveSpecificWorkEvent(we);
+                        await App.DB.SaveSpecificWorkEvent(we);
 
                     TextError.Text = "";
                     TextError.Visibility = Visibility.Collapsed;
@@ -89,6 +91,8 @@ namespace WorkOrganizer
                 else
                 {
                     TextError.Text = Response;
+                    TextError.Inlines.Add(new Run { Text = " Sweetie", Foreground = new SolidColorBrush(Colors.HotPink) });
+                    TextError.Inlines.Add(new Run { Text = "." });
                     TextError.Visibility = Visibility.Visible;
                 }
             }
@@ -104,16 +108,16 @@ namespace WorkOrganizer
             int MoneyUnits = 0;
             int MoneyCents = 0;
             if (DatePicker.Date.DateTime <= DateTime.Today)
-                return "You can't sent events for the past sweetie.";
+                return "You can't sent events for the past";
             else if (!int.TryParse(TextBoxMoneyUnits.Text, out MoneyUnits) ||
                 !int.TryParse(TextBoxMoneyCents.Text, out MoneyCents))
-                return "That is not a number sweetie.";
+                return "That is not a number";
             else if (MoneyUnits < 0 || MoneyCents < 0)
-                return "Money must be 0 or a positive number sweetie.";
+                return "Money must be 0 or a positive number";
             else if (MoneyCents >= 100)
-                return "Cents can't be over 100 sweetie.";
+                return "Cents can't be over 100";
             else if (ComboHouses.SelectedIndex == -1)
-                return "You have to select a house sweetie.";
+                return "You have to select a house";
             else
                 return "OK";
         }

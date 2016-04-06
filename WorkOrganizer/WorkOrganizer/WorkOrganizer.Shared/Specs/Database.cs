@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace WorkOrganizer.Specs
@@ -43,11 +42,11 @@ namespace WorkOrganizer.Specs
         }
 
         #region Houses
-        async void SaveHouses()
+        async Task<bool> SaveHouses()
         {
-            await IOHandler.WriteJsonAsync<House>("wo_Houses.json", Houses);
+            return await IOHandler.WriteJsonAsync<House>("wo_Houses.json", Houses);
         }
-        public DatabaseMessage AddHouse(House house)
+        public async Task<DatabaseMessage> AddHouse(House house)
         {
             if (Houses.Any(h => h.Name == house.Name && !h.IsInvisible))
             {
@@ -57,23 +56,49 @@ namespace WorkOrganizer.Specs
             {
                 Houses.Add(house);
                 house.IdHouse = Houses.Count;
-                SaveHouses();
-                return new DatabaseMessage();
+                Houses = Houses.OrderBy(h => h.IdOwner).ThenBy(h => h.Name).ToList();
+                if (await SaveHouses())
+                    return new DatabaseMessage();
+                else
+                    return new DatabaseMessage(DatabaseMessageState.ERROR, "Error at Database, please repeat the request.");
             }
         }
-        public DatabaseMessage RemoveHouse(int id)
+        public async Task<DatabaseMessage> RemoveHouse(int id)
         {
             Houses.FirstOrDefault(h => h.IdOwner == id).IsInvisible = true;
-            SaveHouses();
+            await SaveHouses();
             return new DatabaseMessage();
+        }
+        public  async Task<DatabaseMessage> EditHouse(int idHouse, House house)
+        {
+            if (Houses.Any(h => h.Name == house.Name && !h.IsInvisible))
+            {
+                return new DatabaseMessage(DatabaseMessageState.ERROR, "The House '" + house.Name + "' already exists.");
+            }
+            else
+            {
+                Houses.RemoveAll(o => o.IdHouse == idHouse);
+                Houses.Add(house);
+                house.IdHouse = idHouse;
+                Houses = Houses.OrderBy(h => h.IdOwner).ThenBy(h => h.Name).ToList();
+                if (await SaveHouses())
+                    return new DatabaseMessage();
+                else
+                    return new DatabaseMessage(DatabaseMessageState.ERROR, "Error at Database, please repeat the request.");
+            }
+        }
+
+        internal List<House> GetOwnersHouses(int idOwner)
+        {
+            return Houses.FindAll(h => h.IdOwner == idOwner).ToList();
         }
         #endregion
         #region Owners
-        async void SaveOwners()
+        async Task<bool> SaveOwners()
         {
-            await IOHandler.WriteJsonAsync<Owner>("wo_Owners.json", Owners);
+            return await IOHandler.WriteJsonAsync<Owner>("wo_Owners.json", Owners);
         }
-        public DatabaseMessage AddOwner(Owner owner)
+        public async Task<DatabaseMessage> AddOwner(Owner owner)
         {
             if (Owners.Any(o => o.Name == owner.Name && !o.IsInvisible))
             {
@@ -83,15 +108,42 @@ namespace WorkOrganizer.Specs
             {
                 Owners.Add(owner);
                 owner.IdOwner = Owners.Count;
-                SaveOwners();
-                return new DatabaseMessage();
+                Owners = Owners.OrderBy(o => o.Name).ToList();
+                if (await SaveOwners())
+                    return new DatabaseMessage();
+                else
+                    return new DatabaseMessage(DatabaseMessageState.ERROR, "Error at Database, please repeat the request.");
             }
         }
-        public DatabaseMessage RemoveOwner(int id)
+        public async Task<DatabaseMessage> EditOwner(int idOwner, Owner owner)
+        {
+            if (Owners.Any(o => o.Name == owner.Name && !o.IsInvisible))
+            {
+                return new DatabaseMessage(DatabaseMessageState.ERROR, "The Owner '" + owner.Name + "' already exists.");
+            }
+            else
+            {
+                Owners.RemoveAll(o => o.IdOwner == idOwner);
+                Owners.Add(owner);
+                owner.IdOwner = idOwner;
+                Owners = Owners.OrderBy(o => o.Name).ToList();
+                if (await SaveOwners())
+                    return new DatabaseMessage();
+                else
+                    return new DatabaseMessage(DatabaseMessageState.ERROR, "Error at Database, please repeat the request.");
+            }
+        }
+
+        public async Task<DatabaseMessage> RemoveOwner(int id)
         {
             Owners.FirstOrDefault(o => o.IdOwner == id).IsInvisible = true;
-            SaveOwners();
+            await SaveOwners();
             return new DatabaseMessage();
+        }
+
+        internal Owner GetOwnerOfHouse(House house)
+        {
+            return Owners.FirstOrDefault(o => o.IdOwner == house.IdOwner);
         }
         #endregion
         #region WorkEvents
@@ -187,6 +239,20 @@ namespace WorkOrganizer.Specs
                 return false;
             }
             
+        }
+        
+        public List<WorkEvent> GetWorkEventsInTheHousesThisMonth(List<House> ownersHouses)
+        {
+            List<WorkEvent> Resp = new List<WorkEvent>();
+            foreach(var h in ownersHouses)
+            {
+                Resp.AddRange(GetWorkEventsInTheHouseThisMonth(h));
+            }
+            return Resp;
+        }
+        public IEnumerable<WorkEvent> GetWorkEventsInTheHouseThisMonth(House h)
+        {
+            return WorkEvents.FindAll(we => we.IdHouse == h.IdHouse);
         }
         #endregion
     }

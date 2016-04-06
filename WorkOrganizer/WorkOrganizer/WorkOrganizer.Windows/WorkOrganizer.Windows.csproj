@@ -109,11 +109,17 @@
     <Compile Include="HouseManagementPage.xaml.cs">
       <DependentUpon>HouseManagementPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="HousePage.xaml.cs">
+      <DependentUpon>HousePage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="OwnerManagementPage.xaml.cs">
       <DependentUpon>OwnerManagementPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="OwnerPage.xaml.cs">
+      <DependentUpon>OwnerPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Specs\IOHandlerSpecific.cs" />
@@ -143,11 +149,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="HousePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
     <Page Include="OwnerManagementPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="OwnerPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

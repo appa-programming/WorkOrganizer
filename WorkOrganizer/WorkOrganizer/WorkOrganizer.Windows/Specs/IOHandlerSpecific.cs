@@ -20,7 +20,7 @@ namespace WorkOrganizer.Specs
                 Stream.Dispose();
                 return Resp;
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return false;
             }
