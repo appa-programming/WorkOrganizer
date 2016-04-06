@@ -95,6 +95,8 @@ namespace WorkOrganizer
                 rootFrame.Navigated += this.RootFrame_FirstNavigated;
 #endif
 
+                DB = new Database();
+
                 // When the navigation stack isn't restored navigate to the first page,
                 // configuring the new page by passing required information as a navigation
                 // parameter
@@ -103,9 +105,6 @@ namespace WorkOrganizer
                     throw new Exception("Failed to create initial page");
                 }
             }
-
-            DB = new Database();
-            DB.Load();
 
             // Ensure the current window is active
             Window.Current.Activate();

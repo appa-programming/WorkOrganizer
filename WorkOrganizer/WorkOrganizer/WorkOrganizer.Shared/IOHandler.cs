@@ -20,7 +20,10 @@ namespace WorkOrganizer
                     fileName,
                     CreationCollisionOption.ReplaceExisting))
                 {
+                    Stream.Flush();
+                    Stream.Position = 0;
                     Serializer.WriteObject(Stream, events);
+                    Stream.Dispose();
                 }
                 return true;
             }
@@ -38,13 +41,16 @@ namespace WorkOrganizer
                     fileName,
                     CreationCollisionOption.ReplaceExisting))
                 {
+                    Stream.Flush();
+                    Stream.Position = 0;
                     Serializer.WriteObject(Stream, list);
+                    Stream.Dispose();
                 }
                 return true;
             }
             catch (Exception e)
             {
-                return false;
+                throw (e);
             }
         }
 
@@ -54,36 +60,48 @@ namespace WorkOrganizer
             {
                 string Content = String.Empty;
                 var MyStream = await ApplicationData.Current.LocalFolder.OpenStreamForReadAsync(fileName);
+                MyStream.Flush();
+                MyStream.Position = 0;
                 using (StreamReader Reader = new StreamReader(MyStream))
                 {
                     Content = await Reader.ReadToEndAsync();
+                    Reader.Dispose();
                 }
                 return Content;
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                return "";
+                throw e;
             }
         }
         public static async Task<IEnumerable<T>> ReadJsonAsync<T>(string fileName)
         {
+            Stream MyStream = null;
             try
             {
                 var JsonSerializer = new DataContractJsonSerializer(typeof(IEnumerable<T>));
-                var MyStream = await ApplicationData.Current.LocalFolder.OpenStreamForReadAsync(fileName);
+                MyStream = await ApplicationData.Current.LocalFolder.OpenStreamForReadAsync(fileName);
                 MyStream.Flush();
                 MyStream.Position = 0;
                 return (IEnumerable<T>)JsonSerializer.ReadObject(MyStream);
             }
             catch (Exception e)
             {
-                return null;
+                throw (e);
+            }
+            finally
+            {
+                if (MyStream != null)
+                {
+                    MyStream.Flush();
+                    MyStream.Dispose();
+                }
             }
         }
 
         public static async Task<bool> ExistsFile(string fileName)
         {
-            return await ApplicationData.Current.LocalFolder.TryGetItemAsync(fileName) != null;
+            return await IOHandlerSpecific.ExistsFile(fileName);
         }
     }
 }

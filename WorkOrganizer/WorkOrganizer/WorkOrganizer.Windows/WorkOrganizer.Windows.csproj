@@ -106,13 +106,17 @@
     <!-- A reference to the entire .Net Framework and Windows SDK are automatically included -->
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AuxiliarManagementPage.xaml.cs">
-      <DependentUpon>AuxiliarManagementPage.xaml</DependentUpon>
+    <Compile Include="HouseManagementPage.xaml.cs">
+      <DependentUpon>HouseManagementPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="OwnerManagementPage.xaml.cs">
+      <DependentUpon>OwnerManagementPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Specs\IOHandlerSpecific.cs" />
     <Compile Include="WorkAnalyzerPage.xaml.cs">
       <DependentUpon>WorkAnalyzerPage.xaml</DependentUpon>
     </Compile>
@@ -135,13 +139,17 @@
     <Content Include="README_FIRST.txt" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="AuxiliarManagementPage.xaml">
+    <Page Include="HouseManagementPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="MainPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="OwnerManagementPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="WorkAnalyzerPage.xaml">
       <SubType>Designer</SubType>

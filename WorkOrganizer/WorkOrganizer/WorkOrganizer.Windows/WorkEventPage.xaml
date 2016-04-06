@@ -14,7 +14,8 @@
             <RowDefinition Height="1*"></RowDefinition>
             <RowDefinition Height="1*"></RowDefinition>
             <RowDefinition Height="1*"></RowDefinition>
-            <RowDefinition Height="3*"></RowDefinition>
+            <RowDefinition Height="1*"></RowDefinition>
+            <RowDefinition Height="1*"></RowDefinition>
             <RowDefinition Height="1*"></RowDefinition>
             <RowDefinition Height="1*"></RowDefinition>
         </Grid.RowDefinitions>
@@ -70,7 +71,7 @@
             <TextBox Name="TextBoxNotes"
                      VerticalAlignment="Center"
                      TextWrapping="Wrap"
-                     Height="90"></TextBox>
+                     Height="70"></TextBox>
         </StackPanel>
         <StackPanel Orientation="Horizontal"
                     VerticalAlignment="Center"
@@ -78,7 +79,7 @@
                     Grid.Row="5">
             <TextBlock Name="TextMoney"
                        Style="{ StaticResource MyTextBoxStyle }">Money</TextBlock>
-            <TextBox Name="TextBoxMoney"
+            <TextBox Name="TextBoxMoneyUnits"
                      InputScope="Number"
                      Text="0"
                      VerticalAlignment="Center"
@@ -92,8 +93,16 @@
                      VerticalAlignment="Center"
                      HorizontalContentAlignment="Right"></TextBox>
         </StackPanel>
-        <Button Name="ButtonCreateEvent"
-                Grid.Row="6"
+        <TextBlock Name="TextError"
+                   Style="{ StaticResource MyTextBoxStyle }"
+                   TextWrapping="WrapWholeWords"
+                   HorizontalAlignment="Center"
+                   Foreground="Red"
+                   FontWeight="Bold"
+                   Visibility="Collapsed"
+                   Grid.Row="6"></TextBlock>
+        <Button Name="ButtonCreateOrEditEvent"
+                Grid.Row="7"
                 HorizontalAlignment="Center"
                 Height="70"
                 Width="200"
@@ -102,7 +111,7 @@
                 BorderThickness="5"
                 BorderBrush="White"
                 Background="Black"
-                Click="ButtonAddEvent_Click">
+                Click="ButtonCreateOrEditEvent_Click">
             Create Event
         </Button>
     </Grid>

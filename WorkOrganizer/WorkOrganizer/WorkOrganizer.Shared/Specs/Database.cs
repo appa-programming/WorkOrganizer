@@ -12,10 +12,17 @@ namespace WorkOrganizer.Specs
         public List<Owner> Owners { get; private set; }
         public DateTime WorkEventsDate { get; set; }
         public List<WorkEvent> WorkEvents { get; private set; }
+        public bool IsLoaded { get; private set; }
 
-
-        public async void Load()
+        public Database()
         {
+            IsLoaded = false;
+        }
+
+        public async Task<bool> Load()
+        {
+            //Houses = new List<House>();
+            //AddHouse(new House("QtaConchas", 1));
             var Hs = (await IOHandler.ReadJsonAsync<House>("wo_Houses.json"));
             if (Hs != null)
                 Houses = Hs.ToList();
@@ -28,7 +35,11 @@ namespace WorkOrganizer.Specs
             else
                 Owners = new List<Owner>();
             DateTime Today = DateTime.Today;
-            LoadWorkEvents(Today.Month, Today.Year);
+            //await SaveWorkEvents(Today.Month, Today.Year);
+            if (!await LoadWorkEvents(Today.Month, Today.Year))
+                WorkEvents = new List<WorkEvent>();
+            IsLoaded = true;
+            return true;
         }
 
         #region Houses
@@ -61,7 +72,6 @@ namespace WorkOrganizer.Specs
         async void SaveOwners()
         {
             await IOHandler.WriteJsonAsync<Owner>("wo_Owners.json", Owners);
-            string debug = (await IOHandler.ReadXMLAsync("wo_Owners.json"));
         }
         public DatabaseMessage AddOwner(Owner owner)
         {
@@ -85,29 +95,43 @@ namespace WorkOrganizer.Specs
         }
         #endregion
         #region WorkEvents
-        async void LoadWorkEvents(int month, int year)
+        private async Task<bool> LoadWorkEvents(int month, int year)
         {
-            WorkEventsDate = new DateTime(year, month, 1);
-            string fileName = "wo_WorkEvents_" + year.ToString() + "_" + month.ToString() + ".json";
-            if (await IOHandler.ExistsFile(fileName))
+            try
             {
-                var WEs = (await IOHandler.ReadJsonAsync<WorkEvent>(fileName));
-                if (WEs != null)
-                    WorkEvents = WEs.ToList();
+                WorkEventsDate = new DateTime(year, month, 1);
+                string fileName = "wo_WorkEvents_" + year.ToString() + "_" + month.ToString() + ".json";
+                if (await IOHandler.ExistsFile(fileName))
+                {
+                    var WEs = (await IOHandler.ReadJsonAsync<WorkEvent>(fileName));
+                    if (WEs != null)
+                        WorkEvents = WEs.ToList();
+                    else
+                        WorkEvents = new List<WorkEvent>();
+                    return true;
+                }
                 else
+                {
                     WorkEvents = new List<WorkEvent>();
+                    return false;
+                }
             }
-            else
+            catch (Exception)
             {
-                WorkEvents = new List<WorkEvent>();
+                return false;
             }
         }
 
-        public async void AddWorkEvent(WorkEvent ev)
+        public async Task<bool> LoadWorkEvents()
+        {
+            return (await LoadWorkEvents(WorkEventsDate.Month, WorkEventsDate.Year));
+        }
+
+        private async void AddWorkEvent(WorkEvent ev)
         {
             WorkEvents.Add(ev);
             WorkEvents = WorkEvents.OrderBy(w => w.Time).ToList();
-            SaveWorkEvents(WorkEventsDate.Month, WorkEventsDate.Year);
+            await SaveWorkEvents(WorkEventsDate.Month, WorkEventsDate.Year);
         }
 
         public async void EditWorkEvent(Guid id, WorkEvent ev)
@@ -117,27 +141,52 @@ namespace WorkOrganizer.Specs
             we.EditTo(ev);
             if (HasCalendarChanges)
             {
-                SaveSpecificWorkEvent(we);
+                await SaveSpecificWorkEvent(we);
                 WorkEvents.Remove(we);
             }
-            SaveWorkEvents(WorkEventsDate.Month, WorkEventsDate.Year);
+            await SaveWorkEvents(WorkEventsDate.Month, WorkEventsDate.Year);
         }
 
-        private async void SaveSpecificWorkEvent(WorkEvent we)
+        public async Task<bool> SaveSpecificWorkEvent(WorkEvent we)
         {
-            DateTime OldWorkEventsDate = WorkEventsDate;
-            List<WorkEvent> OldWorkEvents = WorkEvents;
-            LoadWorkEvents(we.Time.Month, we.Time.Year);
-            WorkEvents.Add(we);
-            WorkEvents = WorkEvents.OrderBy(w => w.Time).ToList();
-            SaveWorkEvents(we.Time.Month, we.Time.Year);
-            WorkEvents = OldWorkEvents;
-            WorkEventsDate = OldWorkEventsDate;
+            try
+            {
+                if (we.Time.Month == WorkEventsDate.Month &&
+                    we.Time.Year == WorkEventsDate.Year)
+                {
+                    AddWorkEvent(we);
+                }
+                else
+                {
+                    DateTime OldWorkEventsDate = WorkEventsDate;
+                    List<WorkEvent> OldWorkEvents = WorkEvents;
+                    await LoadWorkEvents(we.Time.Month, we.Time.Year);
+                    WorkEvents.Add(we);
+                    WorkEvents = WorkEvents.OrderBy(w => w.Time).ToList();
+                    await SaveWorkEvents(we.Time.Month, we.Time.Year);
+                    WorkEvents = OldWorkEvents;
+                    WorkEventsDate = OldWorkEventsDate;
+                }
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
 
-        private async void SaveWorkEvents(int month, int year)
+        private async Task<bool> SaveWorkEvents(int month, int year)
         {
-            await IOHandler.WriteJsonAsync<WorkEvent>("wo_WorkEvents_" + year.ToString() + "_" + month.ToString() + ".json", WorkEvents);
+            try
+            {
+                await IOHandler.WriteJsonAsync<WorkEvent>("wo_WorkEvents_" + year.ToString() + "_" + month.ToString() + ".json", WorkEvents);
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+            
         }
         #endregion
     }

@@ -20,37 +20,21 @@ namespace WorkOrganizer
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class WorkAnalyzerPage : Page
+    public sealed partial class HouseManagementPage : Page
     {
-        public WorkAnalyzerPage()
+        public HouseManagementPage()
         {
             this.InitializeComponent();
         }
 
-        protected override void OnNavigatedTo(NavigationEventArgs e)
-        {
-            var Dt = (DateTime)e.Parameter;
-            DatePickerMonthYear.Date = Dt;
-        }
-
         private void ButtonGoBack_Click(object sender, RoutedEventArgs e)
         {
-            Frame.Navigate(typeof(MainPage), DatePickerMonthYear.Date.Date);
+            Frame.GoBack();
         }
 
-        private void DatePickerMonthYear_DateChanged(object sender, DatePickerValueChangedEventArgs e)
+        private void SwipeToOwner_Click(object sender, RoutedEventArgs e)
         {
-
-        }
-
-        private void RadioButton_Checked(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void SwipeToManagement_Click(object sender, RoutedEventArgs e)
-        {
-            Frame.Navigate(typeof(HouseManagementPage));
+            Frame.Navigate(typeof(OwnerManagementPage));
         }
     }
 }

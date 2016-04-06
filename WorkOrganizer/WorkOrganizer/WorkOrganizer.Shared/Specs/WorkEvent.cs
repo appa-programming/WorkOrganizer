@@ -1,15 +1,33 @@
 ﻿using System;
+using System.Runtime.Serialization;
 
 namespace WorkOrganizer.Specs
 {
+    [DataContractAttribute]
     public class WorkEvent
     {
+        [DataMemberAttribute]
         public Guid Id { get; private set; }
-        public DateTime Time { get; private set; }
-        public int IdHouse { get; private set; }
-        public string Note { get; private set; }
-        public int MoneyUnits { get; private set; }
-        public int MoneyCents { get; private set; }
+        [DataMemberAttribute]
+        public DateTime Time { get; set; }
+        [DataMemberAttribute]
+        public int IdHouse { get; set; }
+        [DataMemberAttribute]
+        public string Note { get; set; }
+        [DataMemberAttribute]
+        public int MoneyUnits { get; set; }
+        [DataMemberAttribute]
+        public int MoneyCents { get; set; }
+
+        public WorkEvent(DateTime time, int idHouse, string note, int moneyUnits, int moneyCents)
+        {
+            Id = Guid.NewGuid();
+            Time = time;
+            IdHouse = idHouse;
+            Note = note;
+            MoneyUnits = moneyUnits;
+            MoneyCents = moneyCents;
+        }
 
         internal void EditTo(WorkEvent ev)
         {

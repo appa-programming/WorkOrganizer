@@ -32,13 +32,16 @@
                 HorizontalAlignment="Right">
             "Swipe Right"
         </Button>
-        <ScrollViewer Grid.Row="2">
-            <TextBox Name="TextBoxTest"
-                     Text="Hi there!"
-                     Width="700"
-                     TextWrapping="Wrap">
-            </TextBox>
-        </ScrollViewer>
+        <Grid Grid.Row="2">
+            <ProgressRing Name="ProgressRing"
+                          Visibility="Visible"></ProgressRing>
+            <ScrollViewer Name="ScrollWorkEvents"
+                          Visibility="Collapsed"
+                          VerticalScrollBarVisibility="Auto">
+                <StackPanel Name="StackWorkEvents"
+                            Orientation="Vertical"></StackPanel>
+            </ScrollViewer>
+        </Grid>
         <Button Name="ButtonAddEvent"
                 Grid.Row="3"
                 HorizontalAlignment="Center"
@@ -52,6 +55,5 @@
                 Click="ButtonAddEvent_Click">
             Add Event
         </Button>
-        <TimePicker Name="TimePicker" ClockIdentifier="24HourClock"></TimePicker>
     </Grid>
 </Page>
