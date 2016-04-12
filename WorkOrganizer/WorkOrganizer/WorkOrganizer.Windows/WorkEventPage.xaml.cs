@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Text.RegularExpressions;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI;
@@ -29,11 +30,47 @@ namespace WorkOrganizer
         public WorkEvent WorkEventOnEdit { get; private set; }
         public bool IsEdit { get; private set; }
 
+        public List<ComboData> ComboDataCheckIn { get; set; }
+        public List<ComboData> ComboDataStairs { get; set; }
+        public List<ComboData> ComboDataCleaning { get; set; }
+        public List<ComboData> ComboDataConstructionCleaning { get; set; }
+        public string LaundryPerKg { get; set; }
+
         public WorkEventPage()
         {
             this.InitializeComponent();
             ComboHouses.ItemsSource = App.DB.Houses;
+
+            var Configs = App.DB.Configs[0];
+            ComboDataCheckIn = GetDataForCombo(Configs.CheckInValues);
+            ComboCheckIn.ItemsSource = ComboDataCheckIn;
+            ComboCheckIn.SelectedIndex = 0;
+
+            ComboDataStairs = GetDataForCombo(Configs.Stairs);
+            ComboStairs.ItemsSource = ComboDataStairs;
+            ComboStairs.SelectedIndex = 0;
+
+            ComboDataCleaning = GetDataForCombo(Configs.Cleaning);
+            ComboCleaning.ItemsSource = ComboDataCleaning;
+            ComboCleaning.SelectedIndex = 0;
+
+            ComboDataConstructionCleaning = GetDataForCombo(Configs.ConstructionCleaning);
+            ComboConstructionCleaning.ItemsSource = ComboDataConstructionCleaning;
+            ComboConstructionCleaning.SelectedIndex = 0;
+
+            LaundryPerKg = Configs.Laundry;
+
             WorkEventOnEdit = null;
+        }
+
+        private List<ComboData> GetDataForCombo(List<string> values)
+        {
+            List<ComboData> ListData = new List<ComboData>();
+            for (int i = 0; i < values.Count; i++)
+            {
+                ListData.Add(new ComboData { IndexValue = i, Value = values[i] });
+            }
+            return ListData;
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -50,11 +87,31 @@ namespace WorkOrganizer
                 TimePicker.Time = ts;
                 ComboHouses.SelectedValue = WorkEventOnEdit.IdHouse;
                 TextBoxNotes.Text = WorkEventOnEdit.Note;
-                TextBoxMoneyUnits.Text = WorkEventOnEdit.MoneyUnits.ToString();
-                TextBoxMoneyCents.Text = WorkEventOnEdit.MoneyCents.ToString();
+                
+                FillCombo(ComboDataCheckIn, ComboCheckIn, App.DB.Configs[0].CheckInValues, WorkEventOnEdit.CheckInMoneyUnits, WorkEventOnEdit.CheckInMoneyCents);
+                FillCombo(ComboDataCleaning, ComboCleaning, App.DB.Configs[0].Cleaning, WorkEventOnEdit.CleaningMoneyUnits, WorkEventOnEdit.CleaningMoneyCents);
+                FillCombo(ComboDataStairs, ComboStairs, App.DB.Configs[0].Stairs, WorkEventOnEdit.StairsMoneyUnits, WorkEventOnEdit.StairsMoneyCents);
+                FillCombo(ComboDataConstructionCleaning, ComboConstructionCleaning, App.DB.Configs[0].ConstructionCleaning, WorkEventOnEdit.ConstructionCleaningMoneyUnits, WorkEventOnEdit.ConstructionCleaningMoneyCents);
+
             }
             else
                 ButtonCreateOrEditEvent.Content = "Create Event";
+        }
+
+        private void FillCombo(List<ComboData> comboData, ComboBox comboBox,
+                                            List<string> existingOptions, int units, int cents)
+        {
+            string TreatedCents = cents.ToString();
+            if (TreatedCents.Length == 1)
+                TreatedCents = "0" + TreatedCents;
+            string value = units + "€" + TreatedCents;
+            if (existingOptions.FirstOrDefault(v => v == value) != null)
+                comboBox.SelectedValue = value;
+            else
+            {
+                comboData.Add(new ComboData() { IndexValue = -1, Value = value });
+                comboBox.SelectedValue = value;
+            }
         }
 
         private void ButtonGoBack_Click(object sender, RoutedEventArgs e)
@@ -74,11 +131,20 @@ namespace WorkOrganizer
                                                 DatePicker.Date.DateTime.Day,
                                                 TimePicker.Time.Hours,
                                                 TimePicker.Time.Minutes, 0);
+                    Tuple<int, int> LaundryMoney = CalculateLaundryMoney();
                     WorkEvent we = new WorkEvent(Time,
                                                 int.Parse(ComboHouses.SelectedValue.ToString()),
                                                 TextBoxNotes.Text,
-                                                int.Parse(TextBoxMoneyUnits.Text),
-                                                int.Parse(TextBoxMoneyCents.Text));
+                                                int.Parse(ComboCheckIn.SelectedValue.ToString().Split('€')[0]),
+                                                int.Parse(ComboCheckIn.SelectedValue.ToString().Split('€')[1]),
+                                                int.Parse(ComboStairs.SelectedValue.ToString().Split('€')[0]),
+                                                int.Parse(ComboStairs.SelectedValue.ToString().Split('€')[1]),
+                                                int.Parse(ComboCleaning.SelectedValue.ToString().Split('€')[0]),
+                                                int.Parse(ComboCleaning.SelectedValue.ToString().Split('€')[1]),
+                                                int.Parse(ComboConstructionCleaning.SelectedValue.ToString().Split('€')[0]),
+                                                int.Parse(ComboConstructionCleaning.SelectedValue.ToString().Split('€')[1]),
+                                                LaundryMoney.Item1,
+                                                LaundryMoney.Item2);
                     if (IsEdit)
                         App.DB.EditWorkEvent(WorkEventOnEdit.Id, we);
                     else
@@ -86,7 +152,9 @@ namespace WorkOrganizer
 
                     TextError.Text = "";
                     TextError.Visibility = Visibility.Collapsed;
-                    Frame.GoBack();
+
+                    Frame.BackStack.RemoveAt(Frame.BackStackDepth - 1);
+                    Frame.Navigate(typeof(MainPage), DatePicker.Date.DateTime);
                 }
                 else
                 {
@@ -103,23 +171,108 @@ namespace WorkOrganizer
             }
         }
 
+        private Tuple<int, int> CalculateLaundryMoney()
+        {
+            string[] Parts = LaundryPerKg.Split('€');
+            int Decimal = 0;
+            if (Parts.Length > 1)
+                Decimal = int.Parse(Parts[1]);
+            if (Parts[1].Length == 1)
+                Decimal *= 10;
+            int Proportion100 = int.Parse(Parts[0]) * 100 + Decimal;
+            string[] WeightParts = GetDecimal(TextBoxLaundry.Text).Split(',');
+            int WeightUnits = int.Parse(WeightParts[0]);
+            if (WeightParts.Length == 1 || (WeightParts.Length > 1 &&
+                WeightParts[1].Length == 0))
+            {
+                return new Tuple<int, int>(
+                                        (WeightUnits * Proportion100) / 100,
+                                        (WeightUnits * Proportion100) % 100
+                                    );
+            }
+            else
+            {
+                int Multiplier = WeightParts[1].Length;
+                int WeightDecimals = int.Parse(WeightParts[1]);
+                return new Tuple<int, int>(
+                                        (WeightUnits * Proportion100) / 100 + (WeightDecimals * Proportion100) / ((int)(100 * Math.Pow(10, Multiplier))),
+                                        (WeightUnits * Proportion100) % 100 + ((WeightDecimals * Proportion100) % ((int)(100 * Math.Pow(10, Multiplier)))) / (int)Math.Pow(10, Multiplier)
+                                    );
+            }
+        }
+
         private string GetDataValidation()
         {
-            int MoneyUnits = 0;
-            int MoneyCents = 0;
-            if (DatePicker.Date.DateTime <= DateTime.Today)
+            DateTime DtAux = DatePicker.Date.DateTime;
+            DtAux = DtAux.Date + TimePicker.Time;
+            if (DtAux <= DateTime.Today)
                 return "You can't sent events for the past";
-            else if (!int.TryParse(TextBoxMoneyUnits.Text, out MoneyUnits) ||
-                !int.TryParse(TextBoxMoneyCents.Text, out MoneyCents))
+            else if (GetDecimal(TextBoxLaundry.Text) == "ERROR")
                 return "That is not a number";
-            else if (MoneyUnits < 0 || MoneyCents < 0)
-                return "Money must be 0 or a positive number";
-            else if (MoneyCents >= 100)
-                return "Cents can't be over 100";
             else if (ComboHouses.SelectedIndex == -1)
                 return "You have to select a house";
             else
                 return "OK";
         }
+
+        private string GetDecimal(string text)
+        {
+            string Content = text;
+            string Pattern = @"(\d+)";
+            Match Result1 = Regex.Match(Content, Pattern);
+            Pattern = @"((\d+)\.(\d+))";
+            Match Result2 = Regex.Match(Content, Pattern);
+            Pattern = @"((\d+)\,(\d+))";
+            Match Result3 = Regex.Match(Content, Pattern);
+            Pattern = @"(\.(\d+))";
+            Match Result4 = Regex.Match(Content, Pattern);
+            Pattern = @"(\,(\d+))";
+            Match Result5 = Regex.Match(Content, Pattern);
+            Pattern = @"((\d+)\.)";
+            Match Result6 = Regex.Match(Content, Pattern);
+            Pattern = @"((\d+)\,)";
+            Match Result7 = Regex.Match(Content, Pattern);
+            if (Result2.Success || Result3.Success || Result4.Success ||
+                Result5.Success || Result6.Success || Result7.Success)
+            {
+                if (Result2.Success || Result4.Success || Result6.Success)
+                    Content = Content.Replace('.', ',');
+                Content = TreatContent(Content);
+                if (Content == "ERROR")
+                {
+                    //TODO Error
+                }
+            }
+            else if (Content == "")
+            {
+                Content = "0";
+            }
+            else if (!Result1.Success)
+            {
+                //TODO Error
+                Content = "ERROR";
+            }
+            return Content;
+        }
+        private string TreatContent(string content)
+        {
+            string Resp = content;
+            string[] Strs = Resp.Split(',');
+            if (Strs[0].Length == 0)
+            {
+                Resp = "0" + Resp;
+            }
+            if (int.Parse(Strs[1]) == 0)
+            {
+                Resp = Strs[0];
+            }
+            return Resp;
+        }
+    }
+
+    public class ComboData
+    {
+        public int IndexValue { get; set; }
+        public string Value { get; set; }
     }
 }
