@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -30,6 +31,7 @@ namespace WorkOrganizer
         public WorkEvent WorkEventOnEdit { get; private set; }
         public bool IsEdit { get; private set; }
 
+        public ObservableCollection<House> ComboDataHouses { get; set; }
         public List<ComboData> ComboDataCheckIn { get; set; }
         public List<ComboData> ComboDataStairs { get; set; }
         public List<ComboData> ComboDataCleaning { get; set; }
@@ -39,7 +41,8 @@ namespace WorkOrganizer
         public WorkEventPage()
         {
             this.InitializeComponent();
-            ComboHouses.ItemsSource = App.DB.Houses;
+            ComboDataHouses = new ObservableCollection<House>( App.DB.ActiveHouses );
+            ComboHouses.ItemsSource = ComboDataHouses;
 
             var Configs = App.DB.Configs[0];
             ComboDataCheckIn = GetDataForCombo(Configs.CheckInValues);
@@ -86,7 +89,20 @@ namespace WorkOrganizer
                 DatePicker.Date = WorkEventOnEdit.Time;
                 TimeSpan ts = new TimeSpan(WorkEventOnEdit.Time.Hour, WorkEventOnEdit.Time.Minute, 0);
                 TimePicker.Time = ts;
+
+                bool HasItem = false;
+                foreach (House item in ComboHouses.Items)
+                {
+                    if (item.IdHouse == WorkEventOnEdit.IdHouse)
+                        HasItem = true;
+                }
+                if (!HasItem)
+                {
+                    ComboDataHouses.Add(App.DB.Houses.First(h => h.IdHouse == WorkEventOnEdit.IdHouse));
+                }
+
                 ComboHouses.SelectedValue = WorkEventOnEdit.IdHouse;
+                
                 TextBoxNotes.Text = WorkEventOnEdit.Note;
                 
                 FillCombo(ComboDataCheckIn, ComboCheckIn, Configs.CheckInValues, WorkEventOnEdit.CheckInMoneyUnits, WorkEventOnEdit.CheckInMoneyCents);

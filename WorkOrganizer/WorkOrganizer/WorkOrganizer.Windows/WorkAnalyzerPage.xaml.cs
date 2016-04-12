@@ -183,7 +183,7 @@ namespace WorkOrganizer
         private void MakeHouseList()
         {
             List<Tuple<House, string, int, int>> DataNeededForPresentation = new List<Tuple<House, string, int, int>>();
-            foreach (var house in App.DB.Houses)
+            foreach (var house in App.DB.ActiveHouses)
             {
                 List<WorkEvent> WorkEventsInTheHouseThisMonth = App.DB.GetWorkEventsInTheHouseThisMonth(house).ToList();
 

@@ -25,6 +25,8 @@ namespace WorkOrganizer
     /// </summary>
     public sealed partial class ConfigsPage : Page
     {
+        public string CurrentLaundryEuroPerKg { get; private set; }
+
         public ConfigsPage()
         {
             this.InitializeComponent();
@@ -43,6 +45,7 @@ namespace WorkOrganizer
                 AddPrice((StackPanel)this.FindName("StackInnerType4"), "4", configs[0].ConstructionCleaning[i]);
             
             TextBoxType5.Text = configs[0].Laundry;
+            CurrentLaundryEuroPerKg = configs[0].Laundry;
         }
 
         private void ButtonGoBack_Click(object sender, RoutedEventArgs e)
@@ -226,6 +229,14 @@ namespace WorkOrganizer
         {
             App.DB.ResetConfig();
             await App.DB.SaveConfigs();
+        }
+
+        private void TextBoxType5_KeyUp(object sender, KeyRoutedEventArgs e)
+        {
+            if(TextBoxType5.Text != CurrentLaundryEuroPerKg)
+            {
+                ButtonSave.IsEnabled = true;
+            }
         }
     }
 }

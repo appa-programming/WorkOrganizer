@@ -8,6 +8,14 @@ namespace WorkOrganizer.Specs
     public class Database
     {
         public List<House> Houses { get; private set; }
+        public List<House> ActiveHouses
+        {
+            get
+            {
+                return Houses.FindAll(h => !h.IsInvisible);
+            }
+            private set { }
+        }
         public List<Owner> Owners { get; private set; }
         public DateTime WorkEventsDate { get; set; }
         public List<WorkEvent> WorkEvents { get; private set; }
@@ -98,7 +106,7 @@ namespace WorkOrganizer.Specs
         }
         public async Task<DatabaseMessage> RemoveHouse(int id)
         {
-            Houses.FirstOrDefault(h => h.IdOwner == id).IsInvisible = true;
+            Houses.FirstOrDefault(h => h.IdHouse == id).IsInvisible = true;
             await SaveHouses();
             return new DatabaseMessage();
         }

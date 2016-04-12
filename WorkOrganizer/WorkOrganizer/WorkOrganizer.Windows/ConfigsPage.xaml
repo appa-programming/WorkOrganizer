@@ -246,7 +246,8 @@
                         Margin="30,0,0,0">
                 <TextBox Name="TextBoxType5"
                          VerticalAlignment="Center"
-                         Margin="42,0,0,0"></TextBox>
+                         Margin="42,0,0,0"
+                         KeyUp="TextBoxType5_KeyUp"></TextBox>
                 <TextBlock Name="TextType5EuroPerKg"
                            Style="{ StaticResource MyTextBoxStyle }"
                            Margin="10,0,0,0">€ / Kg</TextBlock>
