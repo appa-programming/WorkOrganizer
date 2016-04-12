@@ -48,50 +48,125 @@
                         ClockIdentifier="24HourClock"
                         Time="16:0:0"></TimePicker>
         </StackPanel>
+        <Grid VerticalAlignment="Center"
+              Grid.Row="3"
+              HorizontalAlignment="Stretch">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <StackPanel Orientation="Horizontal"
+                        Grid.Column="0">
+                <TextBlock Name="TextHouse"
+                           Style="{ StaticResource MyTextBoxStyle }"
+                           Margin="10,0,10,0">House</TextBlock>
+                <ComboBox Name="ComboHouses"
+                          Grid.Row="3"
+                          VerticalAlignment="Center"
+                          HorizontalAlignment="Center"
+                          DisplayMemberPath="Name"
+                          SelectedValuePath="IdHouse"
+                          PlaceholderText="Pick a House"></ComboBox>
+            </StackPanel>
+            <Grid Grid.Column="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <TextBlock Name="TextNotes"
+                           Margin="40,0,10,0"
+                           Style="{ StaticResource MyTextBoxStyle }">Notes:</TextBlock>
+                <TextBox Name="TextBoxNotes"
+                         VerticalAlignment="Center"
+                         HorizontalAlignment="Stretch"
+                         HorizontalContentAlignment="Stretch"
+                         TextWrapping="Wrap"
+                         Height="70"
+                         Grid.Column="1"
+                         Margin="0,0,10,0"></TextBox>
+            </Grid>
+        </Grid>
         <StackPanel Orientation="Horizontal"
                     VerticalAlignment="Center"
-                    HorizontalAlignment="Center"
-                    Grid.Row="3">
-            <TextBlock Name="TextHouse"
-                       Style="{ StaticResource MyTextBoxStyle }">House</TextBlock>
-            <ComboBox Name="ComboHouses"
-                      Grid.Row="3"
-                      VerticalAlignment="Center"
-                      HorizontalAlignment="Center"
-                      DisplayMemberPath="Name"
-                      SelectedValuePath="IdHouse"
-                      PlaceholderText="Pick a House"></ComboBox>
-        </StackPanel>
-        <StackPanel Orientation="Vertical"
-                    VerticalAlignment="Center"
                     Grid.Row="4"
-                    HorizontalAlignment="Stretch">
-            <TextBlock Name="TextNotes"
-                       Style="{ StaticResource MyTextBoxStyle }">Notes:</TextBlock>
-            <TextBox Name="TextBoxNotes"
-                     VerticalAlignment="Center"
-                     TextWrapping="Wrap"
-                     Height="70"></TextBox>
+                    HorizontalAlignment="Center">
+            <StackPanel Orientation="Vertical"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Center"
+                        Width="100"
+                        Margin="20,0,0,0">
+                <TextBlock Name="TextCheckIn"
+                           Style="{ StaticResource MyTextBoxStyle }"
+                           HorizontalAlignment="Right">CheckIn</TextBlock>
+                <ComboBox Name="ComboCheckIn"
+                          DisplayMemberPath="Value"
+                          SelectedValuePath="Value"
+                          ItemsSource="{Binding}"
+                          SelectedItem="{Binding Path=IndexValue}"></ComboBox>
+            </StackPanel>
+            <StackPanel Orientation="Vertical"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Center"
+                        Width="100"
+                        Margin="20,0,0,0">
+                <TextBlock Name="TextCleaning"
+                           Style="{ StaticResource MyTextBoxStyle }"
+                           HorizontalAlignment="Center">Cleaning</TextBlock>
+                <ComboBox Name="ComboCleaning"
+                          DisplayMemberPath="Value"
+                          SelectedValuePath="Value"
+                          ItemsSource="{Binding}"
+                          SelectedItem="{Binding Path=IndexValue}"></ComboBox>
+            </StackPanel>
+            <StackPanel Orientation="Vertical"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Center"
+                        Width="100"
+                        Margin="20,0,0,0">
+                <TextBlock Name="TextLaundry"
+                           Style="{ StaticResource MyTextBoxStyle }"
+                           HorizontalAlignment="Center">Laundry</TextBlock>
+                <StackPanel Orientation="Horizontal">
+                    <TextBox Name="TextBoxLaundry"></TextBox>
+                    <TextBlock Text="Kgs"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               Margin="5,0,0,0"></TextBlock>
+                </StackPanel>
+            </StackPanel>
         </StackPanel>
         <StackPanel Orientation="Horizontal"
                     VerticalAlignment="Center"
                     HorizontalAlignment="Center"
                     Grid.Row="5">
-            <TextBlock Name="TextMoney"
-                       Style="{ StaticResource MyTextBoxStyle }">Money</TextBlock>
-            <TextBox Name="TextBoxMoneyUnits"
-                     InputScope="Number"
-                     Text="0"
-                     VerticalAlignment="Center"
-                     HorizontalAlignment="Right"
-                     HorizontalContentAlignment="Right"></TextBox>
-            <TextBlock Name="TextEuro"
-                       Style="{ StaticResource MyTextBoxStyle }">€</TextBlock>
-            <TextBox Name="TextBoxMoneyCents"
-                     InputScope="Number"
-                     Text="00"
-                     VerticalAlignment="Center"
-                     HorizontalContentAlignment="Right"></TextBox>
+            <StackPanel Orientation="Vertical"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Center"
+                        Width="100"
+                        Margin="20,0,0,0">
+                <TextBlock Name="TextStairs"
+                           Style="{ StaticResource MyTextBoxStyle }"
+                           HorizontalAlignment="Center">Stairs</TextBlock>
+                <ComboBox Name="ComboStairs"
+                          DisplayMemberPath="Value"
+                          SelectedValuePath="Value"
+                          ItemsSource="{Binding}"
+                          SelectedItem="{Binding Path=IndexValue}"></ComboBox>
+            </StackPanel>
+            <StackPanel Orientation="Vertical"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Center"
+                        Width="250"
+                        Margin="20,0,0,0">
+                <TextBlock Name="TextConstructionCleaning"
+                           Style="{ StaticResource MyTextBoxStyle }"
+                           HorizontalAlignment="Center">Construction Cleaning</TextBlock>
+                <ComboBox Name="ComboConstructionCleaning"
+                          DisplayMemberPath="Value"
+                          SelectedValuePath="Value"
+                          ItemsSource="{Binding}"
+                          SelectedItem="{Binding Path=IndexValue}"></ComboBox>
+            </StackPanel>
         </StackPanel>
         <TextBlock Name="TextError"
                    Style="{ StaticResource MyTextBoxStyle }"

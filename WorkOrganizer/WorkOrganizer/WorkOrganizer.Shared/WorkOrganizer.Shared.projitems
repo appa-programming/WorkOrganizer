@@ -17,6 +17,7 @@
     </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)IOHandler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)NavigationObjects\WorkEventPageNavigation.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Specs\Config.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Specs\Database.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Specs\DatabaseMessage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Specs\House.cs" />

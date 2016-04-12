@@ -34,8 +34,6 @@ namespace WorkOrganizer
             var UISyncContext = TaskScheduler.FromCurrentSynchronizationContext();
             if (!App.DB.IsLoaded)
                 Task.Run(() => App.DB.Load()).ContinueWith(tsk => AddWorkEventBars(), UISyncContext);
-            else
-                AddWorkEventBars();
             /*if (App.DB != null)
                 TextBoxTest.Text = "" + App.DB.Houses.Count + App.DB.Owners.Count + App.DB.WorkEvents.Count;*/
         }
@@ -45,6 +43,8 @@ namespace WorkOrganizer
             {
                 var Dt = (DateTime)e.Parameter;
                 DatePickerSelect.Date = Dt;
+                if (App.DB.IsLoaded)
+                    AddWorkEventBars();
             }
         }
 
@@ -121,7 +121,11 @@ namespace WorkOrganizer
                 Border b3 = new Border();
                 b3.Style = Grid.Resources["BorderStyle"] as Style;
                 TextBlock Money = new TextBlock();
-                Money.Text = we.MoneyUnits + " € " + String.Format("{0:00}", we.MoneyCents);
+                int Units = we.SumUnits();
+                int Cents = we.SumCents();
+                Units += Cents / 100;
+                Cents = Cents % 100;
+                Money.Text = Units + " € " + String.Format("{0:00}", Cents);
                 Money.Style = Application.Current.Resources["MyTextBoxStyle"] as Style;
                 Money.Foreground = new SolidColorBrush(Colors.Green);
                 Money.TextAlignment = TextAlignment.Right;
@@ -162,6 +166,11 @@ namespace WorkOrganizer
         private void SwipeToMonth_Click(object sender, RoutedEventArgs e)
         {
             Frame.Navigate(typeof(WorkAnalyzerPage), DatePickerSelect.Date.DateTime);
+        }
+
+        private void Configs_Click(object sender, RoutedEventArgs e)
+        {
+            Frame.Navigate(typeof(ConfigsPage));
         }
     }
 }

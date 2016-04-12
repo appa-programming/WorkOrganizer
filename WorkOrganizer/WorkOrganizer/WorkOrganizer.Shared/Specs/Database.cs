@@ -11,6 +11,7 @@ namespace WorkOrganizer.Specs
         public List<Owner> Owners { get; private set; }
         public DateTime WorkEventsDate { get; set; }
         public List<WorkEvent> WorkEvents { get; private set; }
+        public List<Config> Configs { get; private set; }
         public bool IsLoaded { get; private set; }
 
         public Database()
@@ -20,6 +21,11 @@ namespace WorkOrganizer.Specs
 
         public async Task<bool> Load()
         {
+            var Cs = (await IOHandler.ReadJsonAsync<Config>("wo_Configs.json"));
+            if (Cs != null)
+                Configs = Cs.ToList();
+            else
+                ResetConfig();
             //Houses = new List<House>();
             //AddHouse(new House("QtaConchas", 1));
             var Hs = (await IOHandler.ReadJsonAsync<House>("wo_Houses.json"));
@@ -41,6 +47,33 @@ namespace WorkOrganizer.Specs
             return true;
         }
 
+        #region Config
+        public void ResetConfig()
+        {
+            Configs = new List<Config>();
+            List<string> CheckInValues          = new List<string> { "0€00", "5€00", "10€00", "15€00", "25€00", "29€00" };
+            List<string> Stairs                 = new List<string> { "0€00", "5€00", "10€00", "15€00", "25€00", "29€00" };
+            List<string> Cleaning               = new List<string> { "0€00", "5€00", "10€00", "15€00", "25€00", "29€00" };
+            List<string> ConstructionCleaning   = new List<string> { "0€00", "5€00", "10€00", "15€00", "25€00", "29€00" };
+            string Laundry = "1€10";
+            Config C = new Config(CheckInValues,
+                                    Stairs,
+                                    Cleaning,
+                                    ConstructionCleaning,
+                                    Laundry);
+            Configs.Add(C);
+        }
+        public async Task<bool> SaveConfigs()
+        {
+            return await IOHandler.WriteJsonAsync<Config>("wo_Configs.json", Configs);
+        }
+        public void SetConfigs(Config c)
+        {
+            List<Config> Cs = new List<Config>();
+            Cs.Add(c);
+            Configs = Cs;
+        }
+        #endregion
         #region Houses
         async Task<bool> SaveHouses()
         {

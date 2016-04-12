@@ -85,9 +85,13 @@ namespace WorkOrganizer
                 MyStream.Position = 0;
                 return (IEnumerable<T>)JsonSerializer.ReadObject(MyStream);
             }
+            catch (FileNotFoundException)
+            {
+                return null;
+            }
             catch (Exception e)
             {
-                throw (e);
+                throw(e);
             }
             finally
             {

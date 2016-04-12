@@ -165,8 +165,8 @@ namespace WorkOrganizer
                 return new Tuple<Owner, int, int>(owner, 0, 0);
             else
             {
-                int SumMoneyUnits = workEventsInTheHousesThisMonth.Sum(we => we.MoneyUnits);
-                int SumMoneyCents = workEventsInTheHousesThisMonth.Sum(we => we.MoneyCents);
+                int SumMoneyUnits = workEventsInTheHousesThisMonth.Sum(we => we.SumUnits());
+                int SumMoneyCents = workEventsInTheHousesThisMonth.Sum(we => we.SumCents());
                 SumMoneyUnits += SumMoneyCents / 100;
                 SumMoneyCents = SumMoneyCents % 100;
                 return new Tuple<Owner, int, int>(owner, SumMoneyUnits, SumMoneyCents);
@@ -258,8 +258,8 @@ namespace WorkOrganizer
                 return new Tuple<House, string, int, int>(house, App.DB.GetOwnerOfHouse(house).Name, 0, 0);
             else
             {
-                int SumMoneyUnits = workEventsInTheHouseThisMonth.Sum(we => we.MoneyUnits);
-                int SumMoneyCents = workEventsInTheHouseThisMonth.Sum(we => we.MoneyCents);
+                int SumMoneyUnits = workEventsInTheHouseThisMonth.Sum(we => we.SumUnits());
+                int SumMoneyCents = workEventsInTheHouseThisMonth.Sum(we => we.SumCents());
                 SumMoneyUnits += SumMoneyCents / 100;
                 SumMoneyCents = SumMoneyCents % 100;
                 return new Tuple<House, string, int, int>(house, App.DB.GetOwnerOfHouse(house).Name, SumMoneyUnits, SumMoneyCents);
