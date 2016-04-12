@@ -156,9 +156,16 @@ namespace WorkOrganizer
                 b1.SetValue(Grid.ColumnProperty, 1);
                 Grid.Children.Add(b1);
 
+                Grid.Tapped += Summary_Tap;
                 StackSummary.Children.Add(Grid);
             }
         }
+
+        private void Summary_Tap(object sender, TappedRoutedEventArgs e)
+        {
+            Frame.Navigate(typeof(SummaryPage), WorkEventsInTheHousesThisMonth);
+        }
+
         private Tuple<Owner, int, int> PrepareOwnerDataForPresentation(Owner owner, List<WorkEvent> workEventsInTheHousesThisMonth)
         {
             if (workEventsInTheHousesThisMonth == null || workEventsInTheHousesThisMonth.Count == 0)

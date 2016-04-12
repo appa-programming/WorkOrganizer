@@ -81,6 +81,7 @@ namespace WorkOrganizer
             IsEdit = (WorkEventOnEdit != null);
             if (IsEdit)
             {
+                var Configs = App.DB.Configs[0];
                 ButtonCreateOrEditEvent.Content = "Edit Event";
                 DatePicker.Date = WorkEventOnEdit.Time;
                 TimeSpan ts = new TimeSpan(WorkEventOnEdit.Time.Hour, WorkEventOnEdit.Time.Minute, 0);
@@ -88,11 +89,20 @@ namespace WorkOrganizer
                 ComboHouses.SelectedValue = WorkEventOnEdit.IdHouse;
                 TextBoxNotes.Text = WorkEventOnEdit.Note;
                 
-                FillCombo(ComboDataCheckIn, ComboCheckIn, App.DB.Configs[0].CheckInValues, WorkEventOnEdit.CheckInMoneyUnits, WorkEventOnEdit.CheckInMoneyCents);
-                FillCombo(ComboDataCleaning, ComboCleaning, App.DB.Configs[0].Cleaning, WorkEventOnEdit.CleaningMoneyUnits, WorkEventOnEdit.CleaningMoneyCents);
-                FillCombo(ComboDataStairs, ComboStairs, App.DB.Configs[0].Stairs, WorkEventOnEdit.StairsMoneyUnits, WorkEventOnEdit.StairsMoneyCents);
-                FillCombo(ComboDataConstructionCleaning, ComboConstructionCleaning, App.DB.Configs[0].ConstructionCleaning, WorkEventOnEdit.ConstructionCleaningMoneyUnits, WorkEventOnEdit.ConstructionCleaningMoneyCents);
+                FillCombo(ComboDataCheckIn, ComboCheckIn, Configs.CheckInValues, WorkEventOnEdit.CheckInMoneyUnits, WorkEventOnEdit.CheckInMoneyCents);
+                FillCombo(ComboDataCleaning, ComboCleaning, Configs.Cleaning, WorkEventOnEdit.CleaningMoneyUnits, WorkEventOnEdit.CleaningMoneyCents);
+                FillCombo(ComboDataStairs, ComboStairs, Configs.Stairs, WorkEventOnEdit.StairsMoneyUnits, WorkEventOnEdit.StairsMoneyCents);
+                FillCombo(ComboDataConstructionCleaning, ComboConstructionCleaning, Configs.ConstructionCleaning, WorkEventOnEdit.ConstructionCleaningMoneyUnits, WorkEventOnEdit.ConstructionCleaningMoneyCents);
 
+                TextBoxLaundry.Text = WorkEventOnEdit.LaundryKgs.ToString();
+                TextBoxMoneyUnits.Text = WorkEventOnEdit.LaundryMoneyUnits.ToString();
+                TextBoxMoneyCents.Text = WorkEventOnEdit.LaundryMoneyCents.ToString();
+
+                LaundryPerKg = WorkEventOnEdit.LaundryEuroPerKilo;
+                if (LaundryPerKg != Configs.Laundry)
+                {
+                    ButtonUpdateLaundry.Visibility = Visibility.Visible;
+                }
             }
             else
                 ButtonCreateOrEditEvent.Content = "Create Event";
@@ -131,7 +141,7 @@ namespace WorkOrganizer
                                                 DatePicker.Date.DateTime.Day,
                                                 TimePicker.Time.Hours,
                                                 TimePicker.Time.Minutes, 0);
-                    Tuple<int, int> LaundryMoney = CalculateLaundryMoney();
+                    Tuple<int, int> LaundryMoney = CalculateLaundryMoney(LaundryPerKg, '€', TextBoxLaundry.Text, ',');
                     WorkEvent we = new WorkEvent(Time,
                                                 int.Parse(ComboHouses.SelectedValue.ToString()),
                                                 TextBoxNotes.Text,
@@ -144,7 +154,9 @@ namespace WorkOrganizer
                                                 int.Parse(ComboConstructionCleaning.SelectedValue.ToString().Split('€')[0]),
                                                 int.Parse(ComboConstructionCleaning.SelectedValue.ToString().Split('€')[1]),
                                                 LaundryMoney.Item1,
-                                                LaundryMoney.Item2);
+                                                LaundryMoney.Item2,
+                                                LaundryPerKg,
+                                                GetDecimal(TextBoxLaundry.Text));
                     if (IsEdit)
                         App.DB.EditWorkEvent(WorkEventOnEdit.Id, we);
                     else
@@ -171,16 +183,17 @@ namespace WorkOrganizer
             }
         }
 
-        private Tuple<int, int> CalculateLaundryMoney()
+        private Tuple<int, int> CalculateLaundryMoney(string value1, char delimiter1,
+                                                        string value2, char delimiter2)
         {
-            string[] Parts = LaundryPerKg.Split('€');
+            string[] Parts = value1.Split('€');
             int Decimal = 0;
             if (Parts.Length > 1)
                 Decimal = int.Parse(Parts[1]);
             if (Parts[1].Length == 1)
                 Decimal *= 10;
             int Proportion100 = int.Parse(Parts[0]) * 100 + Decimal;
-            string[] WeightParts = GetDecimal(TextBoxLaundry.Text).Split(',');
+            string[] WeightParts = GetDecimal(value2).Split(',');
             int WeightUnits = int.Parse(WeightParts[0]);
             if (WeightParts.Length == 1 || (WeightParts.Length > 1 &&
                 WeightParts[1].Length == 0))
@@ -267,6 +280,26 @@ namespace WorkOrganizer
                 Resp = Strs[0];
             }
             return Resp;
+        }
+
+        private void TextBoxLaundry_KeyUp(object sender, KeyRoutedEventArgs e)
+        {
+            var tb = sender as TextBox;
+            if (GetDecimal(tb.Text) != "ERROR")
+            {
+                var t = CalculateLaundryMoney(LaundryPerKg, '€', GetDecimal(tb.Text), ',');
+                TextBoxMoneyUnits.Text = t.Item1.ToString();
+                TextBoxMoneyCents.Text = t.Item2.ToString();
+            }
+        }
+
+        private void ButtonUpdateLaundry_Click(object sender, RoutedEventArgs e)
+        {
+            LaundryPerKg = App.DB.Configs[0].Laundry;
+            var t = CalculateLaundryMoney(LaundryPerKg, '€', GetDecimal(TextBoxLaundry.Text), ',');
+            TextBoxMoneyUnits.Text = t.Item1.ToString();
+            TextBoxMoneyCents.Text = t.Item2.ToString();
+            ButtonUpdateLaundry.Visibility = Visibility.Collapsed;
         }
     }
 

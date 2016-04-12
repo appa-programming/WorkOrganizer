@@ -121,17 +121,40 @@
             <StackPanel Orientation="Vertical"
                         VerticalAlignment="Center"
                         HorizontalAlignment="Center"
-                        Width="100"
+                        Width="250"
                         Margin="20,0,0,0">
-                <TextBlock Name="TextLaundry"
-                           Style="{ StaticResource MyTextBoxStyle }"
-                           HorizontalAlignment="Center">Laundry</TextBlock>
                 <StackPanel Orientation="Horizontal">
-                    <TextBox Name="TextBoxLaundry"></TextBox>
+                    <TextBlock Name="TextLaundry"
+                               Style="{ StaticResource MyTextBoxStyle }"
+                               HorizontalAlignment="Center">Laundry</TextBlock>
+                    <Button Name="ButtonUpdateLaundry"
+                            Visibility="Collapsed"
+                            Click="ButtonUpdateLaundry_Click">Update €/Kg</Button>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBox Name="TextBoxLaundry"
+                             KeyUp="TextBoxLaundry_KeyUp"></TextBox>
                     <TextBlock Text="Kgs"
                                HorizontalAlignment="Center"
                                VerticalAlignment="Center"
+                               Margin="5,0,10,0"></TextBlock>
+                    <TextBox Name="TextBoxMoneyUnits"
+                             HorizontalContentAlignment="Right"
+                             HorizontalAlignment="Right"
+                             TextAlignment="Right"
+                             VerticalAlignment="Center"
+                             Width="50"
+                             IsEnabled="False"
+                             Text="0"></TextBox>
+                    <TextBlock Text="€"
+                               Width="10"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Center"
                                Margin="5,0,0,0"></TextBlock>
+                    <TextBox Name="TextBoxMoneyCents"
+                             Width="50"
+                             IsEnabled="False"
+                             Text="00"></TextBox>
                 </StackPanel>
             </StackPanel>
         </StackPanel>

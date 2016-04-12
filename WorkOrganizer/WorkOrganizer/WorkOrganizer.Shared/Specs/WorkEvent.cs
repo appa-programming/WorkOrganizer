@@ -35,13 +35,18 @@ namespace WorkOrganizer.Specs
         public int LaundryMoneyUnits { get; set; }
         [DataMemberAttribute]
         public int LaundryMoneyCents { get; set; }
+        [DataMemberAttribute]
+        public string LaundryEuroPerKilo { get; set; }
+        [DataMemberAttribute]
+        public string LaundryKgs { get; set; }
 
         public WorkEvent(DateTime time, int idHouse, string note,
                             int checkInMU, int checkInMC,
                             int stairsMU, int stairsMC,
                             int cleaningMU, int cleaningMC,
                             int constructionCleaningMU, int constructionCleaningMC,
-                            int laundryMU, int laundryMC)
+                            int laundryMU, int laundryMC,
+                            string laundryEuroPerKilo, string laundryKgs)
         {
             Id = Guid.NewGuid();
             Time = time;
@@ -57,6 +62,8 @@ namespace WorkOrganizer.Specs
             ConstructionCleaningMoneyCents = constructionCleaningMC;
             LaundryMoneyUnits = laundryMU;
             LaundryMoneyCents = laundryMC;
+            LaundryEuroPerKilo = laundryEuroPerKilo;
+            LaundryKgs = laundryKgs;
         }
 
         internal void EditTo(WorkEvent ev)
@@ -75,6 +82,8 @@ namespace WorkOrganizer.Specs
             ConstructionCleaningMoneyCents = ev.ConstructionCleaningMoneyCents;
             LaundryMoneyUnits = ev.LaundryMoneyUnits;
             LaundryMoneyCents = ev.LaundryMoneyCents;
+            LaundryEuroPerKilo = ev.LaundryEuroPerKilo;
+            LaundryKgs = ev.LaundryKgs;
         }
 
         internal int SumUnits()
