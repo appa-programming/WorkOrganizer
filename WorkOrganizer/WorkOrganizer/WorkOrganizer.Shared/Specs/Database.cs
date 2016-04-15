@@ -17,6 +17,14 @@ namespace WorkOrganizer.Specs
             private set { }
         }
         public List<Owner> Owners { get; private set; }
+        public List<Owner> ActiveOwners
+        {
+            get
+            {
+                return Owners.FindAll(o => !o.IsInvisible);
+            }
+            private set { }
+        }
         public DateTime WorkEventsDate { get; set; }
         public List<WorkEvent> WorkEvents { get; private set; }
         public List<Config> Configs { get; private set; }
@@ -158,7 +166,7 @@ namespace WorkOrganizer.Specs
         }
         public async Task<DatabaseMessage> EditOwner(int idOwner, Owner owner)
         {
-            if (Owners.Any(o => o.Name == owner.Name && !o.IsInvisible))
+            if (Owners.Any(o => o.Name == owner.Name && !o.IsInvisible && o.IdOwner != idOwner))
             {
                 return new DatabaseMessage(DatabaseMessageState.ERROR, "The Owner '" + owner.Name + "' already exists.");
             }
@@ -215,6 +223,20 @@ namespace WorkOrganizer.Specs
             }
         }
 
+        internal async Task<bool> RemoveWorkEvent(Guid id)
+        {
+            try
+            {
+                var WorkEvent = WorkEvents.FirstOrDefault(we => we.Id == id);
+                WorkEvents.Remove(WorkEvent);
+                return await SaveWorkEvents(WorkEvent.Time.Month, WorkEvent.Time.Year);
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
         public async Task<bool> LoadWorkEvents()
         {
             return (await LoadWorkEvents(WorkEventsDate.Month, WorkEventsDate.Year));
@@ -240,6 +262,11 @@ namespace WorkOrganizer.Specs
             await SaveWorkEvents(WorkEventsDate.Month, WorkEventsDate.Year);
         }
 
+        /************************************************************************
+         * There is no need to check if WorkEvent is Loaded except in Add since *
+         * the user can add to any date. Unlike Edit or Remove, on those 2 user *
+         * has to load them before being able to proceed with them.             *
+         ************************************************************************/
         public async Task<bool> SaveSpecificWorkEvent(WorkEvent we)
         {
             try

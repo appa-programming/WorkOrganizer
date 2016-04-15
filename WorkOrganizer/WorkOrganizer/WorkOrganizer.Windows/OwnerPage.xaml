@@ -41,8 +41,15 @@
             <TextBox x:Name="TextBoxName"
                      VerticalAlignment="Center"
                      TextWrapping="Wrap"
-                     Width="400"
-                     ></TextBox>
+                     Width="400"></TextBox>
+            <TextBlock x:Name="TextEmail"
+                       HorizontalAlignment="Center"
+                       Margin="0,30,0,0"
+                       Style="{ StaticResource MyTextBoxStyle }">Name:</TextBlock>
+            <TextBox x:Name="TextBoxEmail"
+                     VerticalAlignment="Center"
+                     TextWrapping="Wrap"
+                     Width="400"></TextBox>
         </StackPanel>
         <TextBlock Name="TextError"
                    Style="{ StaticResource MyTextBoxStyle }"

@@ -39,5 +39,19 @@
                  TextWrapping="Wrap"
                  TextAlignment="Justify"
                  Grid.Row="2"></TextBox>
+        <Button Name="ButtonSendEmail"
+                Grid.Row="3"
+                HorizontalAlignment="Center"
+                Height="70"
+                Width="200"
+                FontSize="26.667"
+                HorizontalContentAlignment="Center"
+                BorderThickness="5"
+                BorderBrush="White"
+                Background="Black"
+                Visibility="Collapsed"
+                Click="ButtonSendEmail_Click">
+            Send Email
+        </Button>
     </Grid>
 </Page>

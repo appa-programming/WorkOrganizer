@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Text;
 using Windows.Foundation;
@@ -24,6 +25,9 @@ namespace WorkOrganizer
     /// </summary>
     public sealed partial class SummaryPage : Page
     {
+        public Owner CurrentOwner { get; private set; }
+        public DateTime CurrentDateTime { get; private set; }
+
         public SummaryPage()
         {
             this.InitializeComponent();
@@ -38,11 +42,21 @@ namespace WorkOrganizer
                 //var Text = MakeTextBasedOnHouses(List);
                 var Text = MakeTextBasedOnDate(List);
                 TextBoxSummary.Text = Text;
+
+                if (CurrentOwner != null && CurrentOwner.Email != "")
+                {
+                    ButtonSendEmail.Visibility = Visibility.Visible;
+                }
             }
         }
 
         private string MakeTextBasedOnDate(List<WorkEvent> list)
         {
+            if (list.Count == 0)
+            {
+                return "There were no services made for this owner.";
+            }
+
             Dictionary<int, House> Houses = new Dictionary<int, House>();
             for (int i = 0; i < list.Count; i++)
             {
@@ -50,6 +64,8 @@ namespace WorkOrganizer
                     Houses[list[i].IdHouse] = App.DB.Houses.FirstOrDefault(h => h.IdHouse == list[i].IdHouse);
             }
             var Owner = App.DB.GetOwnerOfHouse(App.DB.Houses.FirstOrDefault(h => h.IdHouse == list[0].IdHouse));
+            CurrentOwner = Owner;
+            CurrentDateTime = list[0].Time;
             StringBuilder Resp = new StringBuilder();
             Resp.Append("" + Owner.Name + ":\n");
 
@@ -110,6 +126,7 @@ namespace WorkOrganizer
             SumMoneyUnits += SumMoneyCents / 100;
             SumMoneyCents = SumMoneyCents % 100;
             Resp.Append("\nTotal: " + FormatToMoney(SumMoneyUnits, SumMoneyCents, '€'));
+
             return Resp.ToString();
         }
 
@@ -204,6 +221,24 @@ namespace WorkOrganizer
         private void ButtonGoBack_Click(object sender, RoutedEventArgs e)
         {
             Frame.GoBack();
+        }
+
+        private async void ButtonSendEmail_Click(object sender, RoutedEventArgs e)
+        {
+            string subject = "[Accounting] " + CurrentDateTime.ToString("MM/yyyy");
+            string body = MyUrlEncode(TextBoxSummary.Text);
+            var mailto = new Uri("mailto:?to=" + CurrentOwner.Email + "&subject=" + subject + "&body=" + body);
+            await Windows.System.Launcher.LaunchUriAsync(mailto);
+        }
+        public static string MyUrlEncode(string value)
+        {
+            // Temporarily replace spaces with the literal -SPACE-
+            string url = value.Replace(" ", "-SPACE-");
+            url = WebUtility.UrlEncode(url);
+
+            // Some servers have issues with ( and ), but UrlEncode doesn't 
+            // affect them, so we include those in the encoding as well.
+            return url.Replace("-SPACE-", "%20").Replace("(", "%28").Replace(")", "%29");
         }
     }
 }

@@ -26,12 +26,13 @@ namespace WorkOrganizer
     public sealed partial class WorkAnalyzerPage : Page
     {
         bool IsFullyInitialized;
-        List<WorkEvent> WorkEventsInTheHousesThisMonth;
+        Dictionary<int, List<WorkEvent>> WorkEventsInTheHousesThisMonth;
 
         public WorkAnalyzerPage()
         {
             IsFullyInitialized = false;
             this.InitializeComponent();
+            WorkEventsInTheHousesThisMonth = new Dictionary<int, List<WorkEvent>>();
             IsFullyInitialized = true;
             var UISyncContext = TaskScheduler.FromCurrentSynchronizationContext();
             if (!App.DB.IsLoaded)
@@ -102,13 +103,13 @@ namespace WorkOrganizer
             foreach (var owner in App.DB.Owners)
             {
                 List<House> OwnersHouses = App.DB.GetOwnersHouses(owner.IdOwner);
-                WorkEventsInTheHousesThisMonth = App.DB.GetWorkEventsInTheHousesThisMonth(OwnersHouses);
+                WorkEventsInTheHousesThisMonth[owner.IdOwner] = App.DB.GetWorkEventsInTheHousesThisMonth(OwnersHouses);
 
-                if (WorkEventsInTheHousesThisMonth.Count == 0 && owner.IsInvisible)
+                if (WorkEventsInTheHousesThisMonth[owner.IdOwner].Count == 0 && owner.IsInvisible)
                 {
                     continue;
                 }
-                DataNeededForPresentation.Add(PrepareOwnerDataForPresentation(owner, WorkEventsInTheHousesThisMonth));
+                DataNeededForPresentation.Add(PrepareOwnerDataForPresentation(owner, WorkEventsInTheHousesThisMonth[owner.IdOwner]));
             }
             DataNeededForPresentation = DataNeededForPresentation.OrderByDescending(d => d.Item2).ThenByDescending(d => d.Item3).ToList();
             foreach (var tuple in DataNeededForPresentation)
@@ -163,7 +164,9 @@ namespace WorkOrganizer
 
         private void Summary_Tap(object sender, TappedRoutedEventArgs e)
         {
-            Frame.Navigate(typeof(SummaryPage), WorkEventsInTheHousesThisMonth);
+            var Grid = sender as Grid;
+            int IdOwner = int.Parse(Grid.Tag.ToString());
+            Frame.Navigate(typeof(SummaryPage), WorkEventsInTheHousesThisMonth[IdOwner]);
         }
 
         private Tuple<Owner, int, int> PrepareOwnerDataForPresentation(Owner owner, List<WorkEvent> workEventsInTheHousesThisMonth)

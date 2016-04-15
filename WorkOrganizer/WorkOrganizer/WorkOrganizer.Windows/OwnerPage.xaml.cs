@@ -40,6 +40,7 @@ namespace WorkOrganizer
             {
                 ButtonCreateOrEditOwner.Content = "Edit Owner";
                 TextBoxName.Text = OwnerOnEdit.Name.ToString();
+                TextBoxEmail.Text = OwnerOnEdit.Email.ToString();
             }
             else
                 ButtonCreateOrEditOwner.Content = "Create Owner";
@@ -55,7 +56,7 @@ namespace WorkOrganizer
                     TextBoxName.Text.ToLower() != "eu")
                 {
                     DatabaseMessage msg = null;
-                    Owner o = new Owner(TextBoxName.Text);
+                    Owner o = new Owner(TextBoxName.Text, TextBoxEmail.Text);
                     if (IsEdit)
                         msg = await App.DB.EditOwner(OwnerOnEdit.IdOwner, o);
                     else

@@ -179,10 +179,6 @@ namespace WorkOrganizer
                     CharSplitter = ',';
                 Content = Content.Replace(CharSplitter, '€');
                 Content = TreatContent(Content);
-                if (Content == "ERROR")
-                {
-                    //TODO Error
-                }
             }
             else if (result6.Success || result7.Success || result8.Success)
             {
@@ -194,7 +190,6 @@ namespace WorkOrganizer
             }
             else
             {
-                //TODO Error
                 Content = "ERROR";
             }
             tb.Text = Content;

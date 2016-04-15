@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -25,12 +26,14 @@ namespace WorkOrganizer
     /// </summary>
     public sealed partial class HousePage : Page
     {
+        public ObservableCollection<Owner> ComboDataOwners { get; set; }
         public House HouseOnEdit { get; private set; }
         public bool IsEdit { get; private set; }
         public HousePage()
         {
             this.InitializeComponent();
-            ComboOwners.ItemsSource = App.DB.Owners;
+            ComboDataOwners = new ObservableCollection<Owner>( App.DB.ActiveOwners );
+            ComboOwners.ItemsSource = ComboDataOwners;
             HouseOnEdit = null;
         }
 
@@ -42,6 +45,18 @@ namespace WorkOrganizer
             {
                 ButtonCreateOrEditHouse.Content = "Edit House";
                 TextBoxName.Text = HouseOnEdit.Name.ToString();
+
+                bool HasItem = false;
+                foreach (Owner item in ComboOwners.Items)
+                {
+                    if (item.IdOwner == HouseOnEdit.IdOwner)
+                        HasItem = true;
+                }
+                if (!HasItem)
+                {
+                    ComboDataOwners.Add(App.DB.Owners.First(o => o.IdOwner == HouseOnEdit.IdOwner));
+                }
+
                 ComboOwners.SelectedValue = HouseOnEdit.IdOwner;
             }
             else

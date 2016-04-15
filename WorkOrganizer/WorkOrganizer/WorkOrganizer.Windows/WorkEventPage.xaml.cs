@@ -267,10 +267,9 @@ namespace WorkOrganizer
                 if (Result2.Success || Result4.Success || Result6.Success)
                     Content = Content.Replace('.', ',');
                 Content = TreatContent(Content);
-                if (Content == "ERROR")
+                /*if (Content == "ERROR")
                 {
-                    //TODO Error
-                }
+                }*/
             }
             else if (Content == "")
             {
@@ -278,7 +277,6 @@ namespace WorkOrganizer
             }
             else if (!Result1.Success)
             {
-                //TODO Error
                 Content = "ERROR";
             }
             return Content;

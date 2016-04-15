@@ -1,24 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.UI;
-using Windows.UI.Core;
+using Windows.UI.Popups;
 using Windows.UI.Text;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
+using Windows.UI.Xaml.Markup;
 using Windows.UI.Xaml.Media;
+using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
 using WorkOrganizer.NavigationObjects;
-using WorkOrganizer.Specs;
-// The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
 
 namespace WorkOrganizer
 {
@@ -57,33 +49,43 @@ namespace WorkOrganizer
 
             foreach (var we in App.DB.WorkEvents.FindAll(w => w.Time.Day == DatePickerSelect.Date.Day))
             {
-                Grid Grid = new Grid();
+                Grid MainGrid = new Grid();
+                MainGrid.Name = "MainGrid" + we.Id;
 
-                Grid.Tag = we.Id;
-                Grid.Height = 80;
+                ColumnDefinition maincd0 = new ColumnDefinition();
+                maincd0.Width = new GridLength(6, GridUnitType.Star);
+                MainGrid.ColumnDefinitions.Add(maincd0);
+                ColumnDefinition maincd1 = new ColumnDefinition();
+                maincd1.Width = new GridLength(1, GridUnitType.Star);
+                MainGrid.ColumnDefinitions.Add(maincd1);
+
+                Grid LeftGrid = new Grid();
+
+                LeftGrid.Tag = we.Id;
+                LeftGrid.Height = 80;
 
                 Style Style = new Style { TargetType = typeof(Border) };
                 Style.Setters.Add(new Setter(Border.BorderBrushProperty, "Green"));
                 Style.Setters.Add(new Setter(Border.BorderThicknessProperty, "1"));
                 Style.Setters.Add(new Setter(Border.PaddingProperty, "2"));
-                Grid.Resources.Add("BorderStyle", Style);
+                LeftGrid.Resources.Add("BorderStyle", Style);
 
                 ColumnDefinition cd0 = new ColumnDefinition();
                 cd0.Width = new GridLength(1, GridUnitType.Star);
-                Grid.ColumnDefinitions.Add(cd0);
+                LeftGrid.ColumnDefinitions.Add(cd0);
                 ColumnDefinition cd1 = new ColumnDefinition();
                 cd1.Width = new GridLength(2, GridUnitType.Star);
-                Grid.ColumnDefinitions.Add(cd1);
+                LeftGrid.ColumnDefinitions.Add(cd1);
                 ColumnDefinition cd2 = new ColumnDefinition();
                 cd2.Width = new GridLength(4, GridUnitType.Star);
-                Grid.ColumnDefinitions.Add(cd2);
+                LeftGrid.ColumnDefinitions.Add(cd2);
                 ColumnDefinition cd3 = new ColumnDefinition();
                 cd3.Width = new GridLength(1, GridUnitType.Star);
-                Grid.ColumnDefinitions.Add(cd3);
+                LeftGrid.ColumnDefinitions.Add(cd3);
 
-                /*<Border Style="{StaticResource borderStyle}" Grid.Row="0" Grid.Column="0">*/
+                /*<Border Style="{StaticResource borderStyle}" LeftGrid.Row="0" LeftGrid.Column="0">*/
                 Border b0 = new Border();
-                b0.Style = Grid.Resources["BorderStyle"] as Style;
+                b0.Style = LeftGrid.Resources["BorderStyle"] as Style;
 
                 TextBlock Time = new TextBlock();
                 Time.Text = we.Time.Hour + ":" + String.Format("{0:00}", we.Time.Minute);
@@ -93,10 +95,10 @@ namespace WorkOrganizer
                 b0.Child = Time;
 
                 b0.SetValue(Grid.ColumnProperty, 0);
-                Grid.Children.Add(b0);
+                LeftGrid.Children.Add(b0);
 
                 Border b1 = new Border();
-                b1.Style = Grid.Resources["BorderStyle"] as Style;
+                b1.Style = LeftGrid.Resources["BorderStyle"] as Style;
 
                 TextBlock Location = new TextBlock();
                 Location.Text = App.DB.Houses.FirstOrDefault(h => h.IdHouse == we.IdHouse).Name;
@@ -105,10 +107,10 @@ namespace WorkOrganizer
                 b1.Child = Location;
 
                 b1.SetValue(Grid.ColumnProperty, 1);
-                Grid.Children.Add(b1);
+                LeftGrid.Children.Add(b1);
 
                 Border b2 = new Border();
-                b2.Style = Grid.Resources["BorderStyle"] as Style;
+                b2.Style = LeftGrid.Resources["BorderStyle"] as Style;
                 TextBlock Note = new TextBlock();
                 Note.Text = we.Note;
                 Note.Style = Application.Current.Resources["MyTextBoxStyle"] as Style;
@@ -116,10 +118,10 @@ namespace WorkOrganizer
                 b2.Child = Note;
 
                 b2.SetValue(Grid.ColumnProperty, 2);
-                Grid.Children.Add(b2);
+                LeftGrid.Children.Add(b2);
 
                 Border b3 = new Border();
-                b3.Style = Grid.Resources["BorderStyle"] as Style;
+                b3.Style = LeftGrid.Resources["BorderStyle"] as Style;
                 TextBlock Money = new TextBlock();
                 int Units = we.SumUnits();
                 int Cents = we.SumCents();
@@ -132,10 +134,62 @@ namespace WorkOrganizer
                 b3.Child = Money;
 
                 b3.SetValue(Grid.ColumnProperty, 3);
-                Grid.Children.Add(b3);
+                LeftGrid.Children.Add(b3);
 
-                Grid.Tapped += WorkEvent_Tap;
-                StackWorkEvents.Children.Add(Grid);
+                LeftGrid.Tapped += WorkEvent_Tap;
+
+                //------------------------------------------------
+
+                Border b4 = new Border();
+                b4.Style = LeftGrid.Resources["BorderStyle"] as Style;
+
+                Button Delete = new Button();
+                Delete.HorizontalAlignment = HorizontalAlignment.Center;
+                Delete.VerticalAlignment = VerticalAlignment.Center;
+                Delete.Width = 32;
+                Delete.Height = 32;
+                Delete.Tag = we.Id;
+                string Template = "<ControlTemplate xmlns='http://schemas.microsoft.com/winfx/2006/xaml/presentation'>" +
+                                        "<Image Source=\"/Assets/Minus.png\" />" +
+                                    "</ControlTemplate>";
+                Delete.Template = (ControlTemplate)XamlReader.Load(Template);
+                Image img = new Image();
+                img.Source = new BitmapImage(new Uri("ms-appx:///Assets//Minus.png"));
+                Delete.Content = img;
+                Delete.Click += Delete_Click;
+
+                b4.Child = Delete;
+
+                LeftGrid.SetValue(Grid.ColumnProperty, 0);
+                b4.SetValue(Grid.ColumnProperty, 1);
+
+                MainGrid.Children.Add(LeftGrid);
+                MainGrid.Children.Add(b4);
+
+                StackWorkEvents.Children.Add(MainGrid);
+            }
+        }
+        private async void Delete_Click(object sender, RoutedEventArgs e)
+        {
+            var Btn = sender as Button;
+            var WorkEvent = App.DB.WorkEvents.Find(w => w.Id.ToString() == Btn.Tag.ToString());
+            var MsgDialog = new MessageDialog("Are you sure you want to remove this work event from your list ?");
+
+            MsgDialog.Commands.Add(new UICommand("Yes", null, "YES"));
+            MsgDialog.Commands.Add(new UICommand("No", null, "NO"));
+            var op = await MsgDialog.ShowAsync();
+            if ((string)op.Id == "YES")
+            {
+                var Msg = await App.DB.RemoveWorkEvent(WorkEvent.Id);
+                if (!Msg)
+                {
+                    // TODO ERROR
+                }
+                else
+                {
+                    var Grid = (Grid)FindName("MainGrid" + WorkEvent.Id);
+                    StackWorkEvents.Children.Remove(Grid);
+                }
             }
         }
 

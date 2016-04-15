@@ -23,11 +23,14 @@ namespace WorkOrganizer.Specs
         public string Name { get; private set; }
         [DataMemberAttribute]
         public bool IsInvisible { get; set; }
+        [DataMemberAttribute]
+        public string Email { get; internal set; }
 
-        public Owner(string name)
+        public Owner(string name, string email)
         {
             idOwner = -1;
             Name = name;
+            Email = email;
         }
     }
 }
