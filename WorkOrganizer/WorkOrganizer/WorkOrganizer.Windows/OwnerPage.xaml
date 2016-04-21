@@ -45,11 +45,40 @@
             <TextBlock x:Name="TextEmail"
                        HorizontalAlignment="Center"
                        Margin="0,30,0,0"
-                       Style="{ StaticResource MyTextBoxStyle }">Name:</TextBlock>
+                       Style="{ StaticResource MyTextBoxStyle }">Email:</TextBlock>
             <TextBox x:Name="TextBoxEmail"
                      VerticalAlignment="Center"
                      TextWrapping="Wrap"
                      Width="400"></TextBox>
+            <TextBlock x:Name="TextDefaultEmailType"
+                       HorizontalAlignment="Center"
+                       Margin="0,30,0,0"
+                       Style="{ StaticResource MyTextBoxStyle }">Default Email Type:</TextBlock>
+            <ComboBox Name="ComboDefaultEmailType"
+                      SelectedIndex="0"
+                      Width="400">
+                <ComboBoxItem Name="Type1">Type 1</ComboBoxItem>
+                <ComboBoxItem Name="Type2">Type 2</ComboBoxItem>
+                <ComboBoxItem Name="Type3">Type 3</ComboBoxItem>
+            </ComboBox>
+            <StackPanel Orientation="Horizontal"
+                        HorizontalAlignment="Center"
+                        Margin="30,30,0,0">
+                <StackPanel Orientation="Vertical">
+                    <TextBlock Name="TextType5"
+                               Style="{ StaticResource MyTextBoxStyle }"
+                               HorizontalAlignment="Center">Laundry:</TextBlock>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBox Name="TextBoxType5"
+                                    VerticalAlignment="Center"
+                                    Margin="10,0,0,0"
+                                    KeyUp="TextBoxType5_KeyUp"></TextBox>
+                        <TextBlock Name="TextType5EuroPerKg"
+                                    Style="{ StaticResource MyTextBoxStyle }"
+                                        Margin="10,0,0,0">€ / Kg</TextBlock>
+                    </StackPanel>
+                </StackPanel>
+            </StackPanel>
         </StackPanel>
         <TextBlock Name="TextError"
                    Style="{ StaticResource MyTextBoxStyle }"

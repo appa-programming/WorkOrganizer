@@ -35,6 +35,17 @@
                    VerticalAlignment="Center"
                    FontSize="26.667"
                    Grid.Row="1">Summary</TextBlock>
+        <ComboBox Name="ComboType"
+                  SelectedIndex="0"
+                  HorizontalAlignment="Right"
+                  VerticalAlignment="Center"
+                  Margin="0,0,30,0"
+                  Grid.Row="1"
+                  SelectionChanged="ComboType_SelectionChanged">
+            <ComboBoxItem Name="Type1">Type 1</ComboBoxItem>
+            <ComboBoxItem Name="Type2">Type 2</ComboBoxItem>
+            <ComboBoxItem Name="Type3">Type 3</ComboBoxItem>
+        </ComboBox>
         <TextBox Name="TextBoxSummary"
                  TextWrapping="Wrap"
                  TextAlignment="Justify"

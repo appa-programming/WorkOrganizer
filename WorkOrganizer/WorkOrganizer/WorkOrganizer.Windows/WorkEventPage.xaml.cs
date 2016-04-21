@@ -12,6 +12,8 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using WorkOrganizer.NavigationObjects;
 using WorkOrganizer.Specs;
+using static MoneyLib.MoneyCalculator;
+using MoneyLib;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -26,10 +28,10 @@ namespace WorkOrganizer
         public bool IsEdit { get; private set; }
 
         public ObservableCollection<House> ComboDataHouses { get; set; }
-        public List<ComboData> ComboDataCheckIn { get; set; }
-        public List<ComboData> ComboDataStairs { get; set; }
-        public List<ComboData> ComboDataCleaning { get; set; }
-        public List<ComboData> ComboDataConstructionCleaning { get; set; }
+        public ObservableCollection<ComboData> ComboDataCheckIn { get; set; }
+        public ObservableCollection<ComboData> ComboDataStairs { get; set; }
+        public ObservableCollection<ComboData> ComboDataCleaning { get; set; }
+        public ObservableCollection<ComboData> ComboDataConstructionCleaning { get; set; }
         public string LaundryPerKg { get; set; }
 
         public WorkEventPage()
@@ -55,14 +57,14 @@ namespace WorkOrganizer
             ComboConstructionCleaning.ItemsSource = ComboDataConstructionCleaning;
             ComboConstructionCleaning.SelectedIndex = 0;
 
-            LaundryPerKg = Configs.Laundry;
+            LaundryPerKg = "0";
 
             WorkEventOnEdit = null;
         }
 
-        private List<ComboData> GetDataForCombo(List<string> values)
+        private ObservableCollection<ComboData> GetDataForCombo(List<string> values)
         {
-            List<ComboData> ListData = new List<ComboData>();
+            ObservableCollection<ComboData> ListData = new ObservableCollection<ComboData>();
             for (int i = 0; i < values.Count; i++)
             {
                 ListData.Add(new ComboData { IndexValue = i, Value = values[i] });
@@ -83,16 +85,21 @@ namespace WorkOrganizer
                 DatePicker.Date = WorkEventOnEdit.Time;
                 TimeSpan ts = new TimeSpan(WorkEventOnEdit.Time.Hour, WorkEventOnEdit.Time.Minute, 0);
                 TimePicker.Time = ts;
+                House WorkEventHouse = null;
 
                 bool HasItem = false;
                 foreach (House item in ComboHouses.Items)
                 {
                     if (item.IdHouse == WorkEventOnEdit.IdHouse)
+                    {
                         HasItem = true;
+                        WorkEventHouse = App.DB.Houses.First(h => h.IdHouse == WorkEventOnEdit.IdHouse);
+                    }
                 }
                 if (!HasItem)
                 {
-                    ComboDataHouses.Add(App.DB.Houses.First(h => h.IdHouse == WorkEventOnEdit.IdHouse));
+                    WorkEventHouse = App.DB.Houses.First(h => h.IdHouse == WorkEventOnEdit.IdHouse);
+                    ComboDataHouses.Add(WorkEventHouse);
                 }
 
                 ComboHouses.SelectedValue = WorkEventOnEdit.IdHouse;
@@ -109,7 +116,7 @@ namespace WorkOrganizer
                 TextBoxMoneyCents.Text = WorkEventOnEdit.LaundryMoneyCents.ToString();
 
                 LaundryPerKg = WorkEventOnEdit.LaundryEuroPerKilo;
-                if (LaundryPerKg != Configs.Laundry)
+                if (LaundryPerKg != LoadLaundryPrice(WorkEventHouse))
                 {
                     ButtonUpdateLaundry.Visibility = Visibility.Visible;
                 }
@@ -118,19 +125,22 @@ namespace WorkOrganizer
                 ButtonCreateOrEditEvent.Content = "Create Event";
         }
 
-        private void FillCombo(List<ComboData> comboData, ComboBox comboBox,
+        private string LoadLaundryPrice(House workEventHouse)
+        {
+            var Owner = App.DB.GetOwnerOfHouse(workEventHouse);
+            return Owner.Laundry;
+        }
+
+        private void FillCombo(ObservableCollection<ComboData> comboData, ComboBox comboBox,
                                             List<string> existingOptions, int units, int cents)
         {
-            string TreatedCents = cents.ToString();
-            if (TreatedCents.Length == 1)
-                TreatedCents = "0" + TreatedCents;
-            string value = units + "€" + TreatedCents;
-            if (existingOptions.FirstOrDefault(v => v == value) != null)
-                comboBox.SelectedValue = value;
+            string value = GenerateMoneyString(units, cents, MoneyFormat.UU_MM_CC, "€");
+            if (existingOptions.FirstOrDefault(v => IsItTheSameAmmount(v, value)) != null)
+                comboBox.SelectedValue = existingOptions.FirstOrDefault(v => IsItTheSameAmmount(v, value));
             else
             {
-                comboData.Add(new ComboData() { IndexValue = -1, Value = value });
-                comboBox.SelectedValue = value;
+                comboData.Add(new ComboData() { IndexValue = existingOptions.Count, Value = value });
+                comboBox.SelectedIndex = existingOptions.Count;
             }
         }
 
@@ -152,17 +162,21 @@ namespace WorkOrganizer
                                                 TimePicker.Time.Hours,
                                                 TimePicker.Time.Minutes, 0);
                     Tuple<int, int> LaundryMoney = CalculateLaundryMoney(LaundryPerKg, '€', TextBoxLaundry.Text, ',');
+                    Money CheckInMoney = new Money(ComboCheckIn.SelectedValue.ToString());
+                    Money StairsMoney = new Money(ComboStairs.SelectedValue.ToString());
+                    Money CleaningMoney = new Money(ComboCleaning.SelectedValue.ToString());
+                    Money ConstructionCleaningMoney = new Money(ComboConstructionCleaning.SelectedValue.ToString());
                     WorkEvent we = new WorkEvent(Time,
                                                 int.Parse(ComboHouses.SelectedValue.ToString()),
                                                 TextBoxNotes.Text,
-                                                int.Parse(ComboCheckIn.SelectedValue.ToString().Split('€')[0]),
-                                                int.Parse(ComboCheckIn.SelectedValue.ToString().Split('€')[1]),
-                                                int.Parse(ComboStairs.SelectedValue.ToString().Split('€')[0]),
-                                                int.Parse(ComboStairs.SelectedValue.ToString().Split('€')[1]),
-                                                int.Parse(ComboCleaning.SelectedValue.ToString().Split('€')[0]),
-                                                int.Parse(ComboCleaning.SelectedValue.ToString().Split('€')[1]),
-                                                int.Parse(ComboConstructionCleaning.SelectedValue.ToString().Split('€')[0]),
-                                                int.Parse(ComboConstructionCleaning.SelectedValue.ToString().Split('€')[1]),
+                                                CheckInMoney.MoneyUnits,
+                                                CheckInMoney.MoneyCents,
+                                                StairsMoney.MoneyUnits,
+                                                StairsMoney.MoneyCents,
+                                                CleaningMoney.MoneyUnits,
+                                                CleaningMoney.MoneyCents,
+                                                ConstructionCleaningMoney.MoneyUnits,
+                                                ConstructionCleaningMoney.MoneyCents,
                                                 LaundryMoney.Item1,
                                                 LaundryMoney.Item2,
                                                 LaundryPerKg,
@@ -196,41 +210,19 @@ namespace WorkOrganizer
         private Tuple<int, int> CalculateLaundryMoney(string value1, char delimiter1,
                                                         string value2, char delimiter2)
         {
-            string[] Parts = value1.Split('€');
-            int Decimal = 0;
-            if (Parts.Length > 1)
-                Decimal = int.Parse(Parts[1]);
-            if (Parts[1].Length == 1)
-                Decimal *= 10;
-            int Proportion100 = int.Parse(Parts[0]) * 100 + Decimal;
-            string[] WeightParts = GetDecimal(value2).Split(',');
-            int WeightUnits = int.Parse(WeightParts[0]);
-            if (WeightParts.Length == 1 || (WeightParts.Length > 1 &&
-                WeightParts[1].Length == 0))
-            {
-                return new Tuple<int, int>(
-                                        (WeightUnits * Proportion100) / 100,
-                                        (WeightUnits * Proportion100) % 100
-                                    );
-            }
-            else
-            {
-                int Multiplier = WeightParts[1].Length;
-                int WeightDecimals = int.Parse(WeightParts[1]);
-                return new Tuple<int, int>(
-                                        (WeightUnits * Proportion100) / 100 + (WeightDecimals * Proportion100) / ((int)(100 * Math.Pow(10, Multiplier))),
-                                        (WeightUnits * Proportion100) % 100 + ((WeightDecimals * Proportion100) % ((int)(100 * Math.Pow(10, Multiplier)))) / (int)Math.Pow(10, Multiplier)
-                                    );
-            }
+            Money M1 = new Money(value1);
+            Money M2 = new Money(value2);
+            Money Result = Multiply(M1, M2);
+            return new Tuple<int, int>(Result.MoneyUnits, Result.MoneyCents);
         }
 
         private string GetDataValidation()
         {
             DateTime DtAux = DatePicker.Date.DateTime;
             DtAux = DtAux.Date + TimePicker.Time;
-            if (DtAux <= DateTime.Today)
-                return "You can't sent events for the past";
-            else if (GetDecimal(TextBoxLaundry.Text) == "ERROR")
+            /*if (DtAux <= DateTime.Today)
+                return "You can't sent events for the past";*/
+            if (GetDecimal(TextBoxLaundry.Text) == "ERROR")
                 return "That is not a number";
             else if (ComboHouses.SelectedIndex == -1)
                 return "You have to select a house";
@@ -303,11 +295,28 @@ namespace WorkOrganizer
 
         private void ButtonUpdateLaundry_Click(object sender, RoutedEventArgs e)
         {
-            LaundryPerKg = App.DB.Configs[0].Laundry;
+            LaundryPerKg = LoadLaundryPrice((House)ComboHouses.SelectedItem);
             var t = CalculateLaundryMoney(LaundryPerKg, '€', GetDecimal(TextBoxLaundry.Text), ',');
             TextBoxMoneyUnits.Text = t.Item1.ToString();
             TextBoxMoneyCents.Text = t.Item2.ToString();
             ButtonUpdateLaundry.Visibility = Visibility.Collapsed;
+        }
+
+        private void ComboHouses_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            TextBoxLaundry.IsEnabled = true;
+            var House = (sender as ComboBox).SelectedItem as House;
+            LaundryPerKg = App.DB.GetOwnerOfHouse(House).Laundry;
+
+            if (TextBoxLaundry.Text != "")
+            {
+                if (GetDecimal(TextBoxLaundry.Text) != "ERROR")
+                {
+                    var t = CalculateLaundryMoney(LaundryPerKg, '€', GetDecimal(TextBoxLaundry.Text), ',');
+                    TextBoxMoneyUnits.Text = t.Item1.ToString();
+                    TextBoxMoneyCents.Text = t.Item2.ToString();
+                }
+            }
         }
     }
 

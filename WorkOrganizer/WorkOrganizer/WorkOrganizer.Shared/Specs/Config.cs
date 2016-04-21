@@ -14,16 +14,13 @@ namespace WorkOrganizer.Specs
         public List<string> Cleaning { get; private set; }
         [DataMemberAttribute]
         public List<string> ConstructionCleaning { get; private set; }
-        [DataMemberAttribute]
-        public string Laundry { get; private set; }
 
-        public Config(List<string> ci, List<string> s, List<string> c, List<string> cc, string l)
+        public Config(List<string> ci, List<string> s, List<string> c, List<string> cc)
         {
             CheckInValues = ci;
             Stairs = s;
             Cleaning = c;
             ConstructionCleaning = cc;
-            Laundry = l;
         }
     }
 }

@@ -11,6 +11,8 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
 using WorkOrganizer.NavigationObjects;
+using MoneyLib;
+using static MoneyLib.MoneyCalculator;
 
 namespace WorkOrganizer
 {
@@ -125,9 +127,7 @@ namespace WorkOrganizer
                 TextBlock Money = new TextBlock();
                 int Units = we.SumUnits();
                 int Cents = we.SumCents();
-                Units += Cents / 100;
-                Cents = Cents % 100;
-                Money.Text = Units + " € " + String.Format("{0:00}", Cents);
+                Money.Text = GenerateMoneyString(Units, Cents, MoneyFormat.UU_MM_CC, "€");
                 Money.Style = Application.Current.Resources["MyTextBoxStyle"] as Style;
                 Money.Foreground = new SolidColorBrush(Colors.Green);
                 Money.TextAlignment = TextAlignment.Right;

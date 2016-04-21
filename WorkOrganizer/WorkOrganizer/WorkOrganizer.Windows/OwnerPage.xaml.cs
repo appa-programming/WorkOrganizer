@@ -3,6 +3,7 @@ using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Documents;
+using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using WorkOrganizer.Specs;
@@ -16,12 +17,15 @@ namespace WorkOrganizer
     /// </summary>
     public sealed partial class OwnerPage : Page
     {
+        public string CurrentLaundryEuroPerKg { get; private set; }
         public Owner OwnerOnEdit { get; private set; }
         public bool IsEdit { get; private set; }
+
         public OwnerPage()
         {
             this.InitializeComponent();
             OwnerOnEdit = null;
+            CurrentLaundryEuroPerKg = "1.1";
         }
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
@@ -32,6 +36,10 @@ namespace WorkOrganizer
                 ButtonCreateOrEditOwner.Content = "Edit Owner";
                 TextBoxName.Text = OwnerOnEdit.Name.ToString();
                 TextBoxEmail.Text = OwnerOnEdit.Email.ToString();
+                ComboDefaultEmailType.SelectedIndex = int.Parse(OwnerOnEdit.DefaultEmailType.Substring(4)) - 1;
+                TextBoxType5.Text = OwnerOnEdit.Laundry;
+                CurrentLaundryEuroPerKg = OwnerOnEdit.Laundry;
+                ButtonCreateOrEditOwner.IsEnabled = false;
             }
             else
                 ButtonCreateOrEditOwner.Content = "Create Owner";
@@ -47,7 +55,9 @@ namespace WorkOrganizer
                     TextBoxName.Text.ToLower() != "eu")
                 {
                     DatabaseMessage msg = null;
-                    Owner o = new Owner(TextBoxName.Text, TextBoxEmail.Text);
+                    Owner o = new Owner(TextBoxName.Text, TextBoxEmail.Text,
+                                ((ComboBoxItem)ComboDefaultEmailType.SelectedItem).Name,
+                                TextBoxType5.Text);
                     if (IsEdit)
                         msg = await App.DB.EditOwner(OwnerOnEdit.IdOwner, o);
                     else
@@ -83,6 +93,14 @@ namespace WorkOrganizer
         private void ButtonGoBack_Click(object sender, RoutedEventArgs e)
         {
             Frame.GoBack();
+        }
+        
+        private void TextBoxType5_KeyUp(object sender, KeyRoutedEventArgs e)
+        {
+            if (TextBoxType5.Text != CurrentLaundryEuroPerKg)
+            {
+                ButtonCreateOrEditOwner.IsEnabled = true;
+            }
         }
     }
 }

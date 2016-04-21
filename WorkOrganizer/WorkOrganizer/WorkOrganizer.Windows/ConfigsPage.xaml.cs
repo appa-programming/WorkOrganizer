@@ -34,8 +34,6 @@ namespace WorkOrganizer
             for (int i = 1; i < configs[0].ConstructionCleaning.Count; i++)
                 AddPrice((StackPanel)this.FindName("StackInnerType4"), "4", configs[0].ConstructionCleaning[i]);
             
-            TextBoxType5.Text = configs[0].Laundry;
-            CurrentLaundryEuroPerKg = configs[0].Laundry;
         }
 
         private void ButtonGoBack_Click(object sender, RoutedEventArgs e)
@@ -50,7 +48,6 @@ namespace WorkOrganizer
             List<string> Stairs                 = new List<string> { "0€00" };
             List<string> Cleaning               = new List<string> { "0€00" };
             List<string> ConstructionCleaning   = new List<string> { "0€00" };
-            string Laundry = TextBoxType5.Text;
 
             foreach (TextBox tb in StackInnerType1.Children)
                 CheckInValues.Add(tb.Text);
@@ -64,8 +61,7 @@ namespace WorkOrganizer
             Config Conf = new Config(CheckInValues,
                                         Stairs,
                                         Cleaning,
-                                        ConstructionCleaning,
-                                        Laundry);
+                                        ConstructionCleaning);
             App.DB.SetConfigs(Conf);
             await App.DB.SaveConfigs();
         }
@@ -215,14 +211,6 @@ namespace WorkOrganizer
             App.DB.ResetConfig();
             await App.DB.SaveConfigs();
             LoadConfigs(App.DB.Configs);
-        }
-
-        private void TextBoxType5_KeyUp(object sender, KeyRoutedEventArgs e)
-        {
-            if(TextBoxType5.Text != CurrentLaundryEuroPerKg)
-            {
-                ButtonSave.IsEnabled = true;
-            }
         }
     }
 }

@@ -25,12 +25,18 @@ namespace WorkOrganizer.Specs
         public bool IsInvisible { get; set; }
         [DataMemberAttribute]
         public string Email { get; internal set; }
+        [DataMemberAttribute]
+        public string DefaultEmailType { get; internal set; }
+        [DataMemberAttribute]
+        public string Laundry { get; private set; }
 
-        public Owner(string name, string email)
+        public Owner(string name, string email, string defaultEmailType, string laundry)
         {
             idOwner = -1;
             Name = name;
             Email = email;
+            DefaultEmailType = defaultEmailType;
+            Laundry = laundry;
         }
     }
 }

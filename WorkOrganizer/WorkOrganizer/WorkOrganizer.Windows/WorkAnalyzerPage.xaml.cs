@@ -8,6 +8,7 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Navigation;
 using WorkOrganizer.Specs;
+using static MoneyLib.MoneyCalculator;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -142,7 +143,7 @@ namespace WorkOrganizer
                 b1.Style = Grid.Resources["BorderStyle"] as Style;
 
                 TextBlock Money = new TextBlock();
-                Money.Text = tuple.Item2 + " € " + String.Format("{0:00}", tuple.Item3);
+                Money.Text = GenerateMoneyString(tuple.Item2, tuple.Item3, MoneyFormat.UU_MM_CC, " € ");
                 Money.Style = Application.Current.Resources["MyTextBoxStyle"] as Style;
                 Money.TextAlignment = TextAlignment.Right;
                 b1.Child = Money;
@@ -243,7 +244,7 @@ namespace WorkOrganizer
                 b2.Style = Grid.Resources["BorderStyle"] as Style;
 
                 TextBlock Money = new TextBlock();
-                Money.Text = tuple.Item3 + " € " + String.Format("{0:00}", tuple.Item4);
+                Money.Text = GenerateMoneyString(tuple.Item3, tuple.Item4, MoneyFormat.UU_MM_CC, " € ");
                 Money.Style = Application.Current.Resources["MyTextBoxStyle"] as Style;
                 Money.TextAlignment = TextAlignment.Right;
                 b2.Child = Money;

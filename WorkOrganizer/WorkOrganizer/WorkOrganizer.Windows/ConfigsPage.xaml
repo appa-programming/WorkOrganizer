@@ -231,28 +231,6 @@
             </StackPanel>
         </Grid>
 
-        <Grid Grid.Row="6">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="4*"></ColumnDefinition>
-                <ColumnDefinition Width="6*"></ColumnDefinition>
-            </Grid.ColumnDefinitions>
-            <TextBlock Name="TextType5"
-                       Style="{ StaticResource MyTextBoxStyle }"
-                       HorizontalAlignment="Center"
-                       Grid.Column="0">Laundry:</TextBlock>
-            <StackPanel Orientation="Horizontal"
-                        Grid.Column="1"
-                        HorizontalAlignment="Left"
-                        Margin="30,0,0,0">
-                <TextBox Name="TextBoxType5"
-                         VerticalAlignment="Center"
-                         Margin="42,0,0,0"
-                         KeyUp="TextBoxType5_KeyUp"></TextBox>
-                <TextBlock Name="TextType5EuroPerKg"
-                           Style="{ StaticResource MyTextBoxStyle }"
-                           Margin="10,0,0,0">€ / Kg</TextBlock>
-            </StackPanel>
-        </Grid>
         <Button Name="ButtonSave"
                 HorizontalAlignment="Center"
                 Height="70"

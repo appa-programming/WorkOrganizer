@@ -20,8 +20,14 @@
     <Compile Include="$(MSBuildThisFileDirectory)Specs\Config.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Specs\Database.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Specs\DatabaseMessage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Specs\EmailHandler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Specs\EmailHandlerFactory.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Specs\House.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Specs\Owner.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Specs\PortugueseUtils.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Specs\Type3EmailHandler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Specs\Type2EmailHandler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Specs\Type1EmailHandler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Specs\WorkEvent.cs" />
   </ItemGroup>
 </Project>

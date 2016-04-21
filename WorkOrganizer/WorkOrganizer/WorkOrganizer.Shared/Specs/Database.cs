@@ -71,12 +71,10 @@ namespace WorkOrganizer.Specs
             List<string> Stairs                 = new List<string> { "0€00", "5€00", "10€00", "15€00", "25€00", "29€00" };
             List<string> Cleaning               = new List<string> { "0€00", "5€00", "10€00", "15€00", "25€00", "29€00" };
             List<string> ConstructionCleaning   = new List<string> { "0€00", "5€00", "10€00", "15€00", "25€00", "29€00" };
-            string Laundry = "1€10";
             Config C = new Config(CheckInValues,
                                     Stairs,
                                     Cleaning,
-                                    ConstructionCleaning,
-                                    Laundry);
+                                    ConstructionCleaning);
             Configs.Add(C);
         }
         public async Task<bool> SaveConfigs()
