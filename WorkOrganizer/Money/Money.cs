@@ -21,9 +21,17 @@ namespace MoneyLib
         public Money(string money)
         {
             Char CurrencyAux = '€';
-            Tuple<int, int> t = GetTupleAmmount(money, CurrencyAux);
-            MoneyUnits = t.Item1;
-            MoneyCents = t.Item2;
+            if (!string.IsNullOrEmpty(money))
+            {
+                Tuple<int, int> t = GetTupleAmmount(money, CurrencyAux);
+                MoneyUnits = t.Item1;
+                MoneyCents = t.Item2;
+            }
+            else
+            {
+                MoneyUnits = 0;
+                MoneyCents = 0;
+            }
             Currency = CurrencyAux.ToString();
         }
     }

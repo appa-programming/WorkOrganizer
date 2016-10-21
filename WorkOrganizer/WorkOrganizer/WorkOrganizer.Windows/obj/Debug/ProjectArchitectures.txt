@@ -1,0 +1,2 @@
+C:\APPA\Projectos\Proprios\WindowsPhone\WorkOrganizer\WorkOrganizer\Money\MoneyLib.csproj;neutral
+C:\APPA\Projectos\Proprios\WindowsPhone\WorkOrganizer\WorkOrganizer\WorkOrganizer\WorkOrganizer.Windows\WorkOrganizer.Windows.csproj;neutral

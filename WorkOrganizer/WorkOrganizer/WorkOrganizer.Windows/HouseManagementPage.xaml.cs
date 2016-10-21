@@ -21,11 +21,18 @@ namespace WorkOrganizer
         public HouseManagementPage()
         {
             this.InitializeComponent();
-            var UISyncContext = TaskScheduler.FromCurrentSynchronizationContext();
-            if (!App.DB.IsLoaded)
-                Task.Run(() => App.DB.Load()).ContinueWith(tsk => AddHouseBars(), UISyncContext);
+            if (App.DB.Owners != null)
+            {
+                var UISyncContext = TaskScheduler.FromCurrentSynchronizationContext();
+                if (!App.DB.IsLoaded)
+                    Task.Run(() => App.DB.Load()).ContinueWith(tsk => AddHouseBars(), UISyncContext);
+                else
+                    AddHouseBars();
+            }
             else
-                AddHouseBars();
+            {
+                ButtonAddHouse.Visibility = Visibility.Collapsed;
+            }
         }
         private void AddHouseBars()
         {

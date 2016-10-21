@@ -34,6 +34,11 @@ namespace WorkOrganizer
 
             StackOwners.Children.Clear();
 
+            if (App.DB.ActiveOwners == null)
+            {
+                return;
+            }
+
             foreach (var owner in App.DB.ActiveOwners)
             {
                 Grid MainGrid = new Grid();

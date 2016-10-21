@@ -1,0 +1,219 @@
+﻿<Page x:Class="WorkOrganizer.WorkEventPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:local="using:WorkOrganizer"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      mc:Ignorable="d">
+
+    <Grid Name="LayoutRoot"
+          Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <Grid.RowDefinitions>
+            <!--Total = 9-->
+            <RowDefinition Height="1*"></RowDefinition>
+            <RowDefinition Height="1*"></RowDefinition>
+            <RowDefinition Height="1*"></RowDefinition>
+            <RowDefinition Height="1*"></RowDefinition>
+            <RowDefinition Height="1*"></RowDefinition>
+            <RowDefinition Height="1*"></RowDefinition>
+            <RowDefinition Height="1*"></RowDefinition>
+            <RowDefinition Height="1*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <TextBlock Name="WorkOrganizer"
+                   Grid.Row="0"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center"
+                   Style="{ ThemeResource HeaderTextBlockStyle }"
+                   FontWeight="Bold">
+            Work Organizer
+        </TextBlock>
+        <Button x:ConnectionId='1' Name="ButtonGoBack"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Center"
+                                          
+                Grid.Row="1">
+            Back
+        </Button>
+        <StackPanel Orientation="Horizontal"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Center"
+                    Grid.Row="2">
+            <TextBlock Name="TextDate"
+                       Style="{ StaticResource MyTextBoxStyle }">Date</TextBlock>
+            <DatePicker Name="DatePicker"
+                        Margin="0,0,20,0"></DatePicker>
+            <TextBlock Name="TextTime"
+                       Style="{ StaticResource MyTextBoxStyle }">Time</TextBlock>
+            <TimePicker Name="TimePicker"
+                        ClockIdentifier="24HourClock"
+                        Time="16:0:0"></TimePicker>
+        </StackPanel>
+        <Grid VerticalAlignment="Center"
+              Grid.Row="3"
+              HorizontalAlignment="Stretch">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <StackPanel Orientation="Horizontal"
+                        Grid.Column="0">
+                <TextBlock Name="TextHouse"
+                           Style="{ StaticResource MyTextBoxStyle }"
+                           Margin="10,0,10,0">House</TextBlock>
+                <ComboBox x:ConnectionId='5' Name="ComboHouses"
+                          Grid.Row="3"
+                          VerticalAlignment="Center"
+                          HorizontalAlignment="Center"
+                          DisplayMemberPath="Name"
+                          SelectedValuePath="IdHouse"
+                          PlaceholderText="Pick a House"
+                                                                         ></ComboBox>
+            </StackPanel>
+            <Grid Grid.Column="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <TextBlock Name="TextNotes"
+                           Margin="40,0,10,0"
+                           Style="{ StaticResource MyTextBoxStyle }">Notes:</TextBlock>
+                <TextBox Name="TextBoxNotes"
+                         VerticalAlignment="Center"
+                         HorizontalAlignment="Stretch"
+                         HorizontalContentAlignment="Stretch"
+                         TextWrapping="Wrap"
+                         Height="70"
+                         Grid.Column="1"
+                         Margin="0,0,10,0"></TextBox>
+            </Grid>
+        </Grid>
+        <StackPanel Orientation="Horizontal"
+                    VerticalAlignment="Center"
+                    Grid.Row="4"
+                    HorizontalAlignment="Center">
+            <StackPanel Orientation="Vertical"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Center"
+                        Width="100"
+                        Margin="20,0,0,0">
+                <TextBlock Name="TextCheckIn"
+                           Style="{ StaticResource MyTextBoxStyle }"
+                           HorizontalAlignment="Right">CheckIn</TextBlock>
+                <ComboBox Name="ComboCheckIn"
+                          DisplayMemberPath="Value"
+                          SelectedValuePath="Value"
+                          ItemsSource="{Binding}"
+                          SelectedItem="{Binding Path=IndexValue}"></ComboBox>
+            </StackPanel>
+            <StackPanel Orientation="Vertical"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Center"
+                        Width="100"
+                        Margin="20,0,0,0">
+                <TextBlock Name="TextCleaning"
+                           Style="{ StaticResource MyTextBoxStyle }"
+                           HorizontalAlignment="Center">Cleaning</TextBlock>
+                <ComboBox Name="ComboCleaning"
+                          DisplayMemberPath="Value"
+                          SelectedValuePath="Value"
+                          ItemsSource="{Binding}"
+                          SelectedItem="{Binding Path=IndexValue}"></ComboBox>
+            </StackPanel>
+            <StackPanel Orientation="Vertical"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Center"
+                        Width="250"
+                        Margin="20,0,0,0">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Name="TextLaundry"
+                               Style="{ StaticResource MyTextBoxStyle }"
+                               HorizontalAlignment="Center">Laundry</TextBlock>
+                    <Button x:ConnectionId='4' Name="ButtonUpdateLaundry"
+                            Visibility="Collapsed"
+                                                             >Update €/Kg</Button>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBox x:ConnectionId='3' Name="TextBoxLaundry"
+                                                         
+                             IsEnabled="False"></TextBox>
+                    <TextBlock Text="Kgs"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               Margin="5,0,10,0"></TextBlock>
+                    <TextBox Name="TextBoxMoneyUnits"
+                             HorizontalContentAlignment="Right"
+                             HorizontalAlignment="Right"
+                             TextAlignment="Right"
+                             VerticalAlignment="Center"
+                             Width="50"
+                             IsEnabled="False"
+                             Text="0"></TextBox>
+                    <TextBlock Text="€"
+                               Width="10"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Center"
+                               Margin="5,0,0,0"></TextBlock>
+                    <TextBox Name="TextBoxMoneyCents"
+                             Width="50"
+                             IsEnabled="False"
+                             Text="00"></TextBox>
+                </StackPanel>
+            </StackPanel>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Center"
+                    Grid.Row="5">
+            <StackPanel Orientation="Vertical"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Center"
+                        Width="100"
+                        Margin="20,0,0,0">
+                <TextBlock Name="TextStairs"
+                           Style="{ StaticResource MyTextBoxStyle }"
+                           HorizontalAlignment="Center">Stairs</TextBlock>
+                <ComboBox Name="ComboStairs"
+                          DisplayMemberPath="Value"
+                          SelectedValuePath="Value"
+                          ItemsSource="{Binding}"
+                          SelectedItem="{Binding Path=IndexValue}"></ComboBox>
+            </StackPanel>
+            <StackPanel Orientation="Vertical"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Center"
+                        Width="250"
+                        Margin="20,0,0,0">
+                <TextBlock Name="TextConstructionCleaning"
+                           Style="{ StaticResource MyTextBoxStyle }"
+                           HorizontalAlignment="Center">Construction Cleaning</TextBlock>
+                <ComboBox Name="ComboConstructionCleaning"
+                          DisplayMemberPath="Value"
+                          SelectedValuePath="Value"
+                          ItemsSource="{Binding}"
+                          SelectedItem="{Binding Path=IndexValue}"></ComboBox>
+            </StackPanel>
+        </StackPanel>
+        <TextBlock Name="TextError"
+                   Style="{ StaticResource MyTextBoxStyle }"
+                   TextWrapping="WrapWholeWords"
+                   HorizontalAlignment="Center"
+                   Foreground="Red"
+                   FontWeight="Bold"
+                   Visibility="Collapsed"
+                   Grid.Row="6"></TextBlock>
+        <Button x:ConnectionId='2' Name="ButtonCreateOrEditEvent"
+                Grid.Row="7"
+                HorizontalAlignment="Center"
+                Height="70"
+                Width="200"
+                FontSize="26.667"
+                HorizontalContentAlignment="Center"
+                BorderThickness="5"
+                BorderBrush="White"
+                Background="Black"
+                                                     >
+            Create Event
+        </Button>
+    </Grid>
+</Page>
+

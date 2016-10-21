@@ -1,0 +1,19 @@
+﻿<Application x:Class="WorkOrganizer.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="using:WorkOrganizer">
+
+    <Application.Resources>
+        <Style TargetType="TextBlock"
+               x:Key="MyTextBoxStyle">
+            <Setter Property="VerticalAlignment"
+                    Value="Center"></Setter>
+            <Setter Property="FontSize"
+                    Value="20"></Setter>
+            <Setter Property="Margin"
+                    Value="0,0,20,0"></Setter>
+        </Style>
+    </Application.Resources>
+
+</Application>
+

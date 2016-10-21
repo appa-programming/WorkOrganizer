@@ -13,6 +13,7 @@ using Windows.UI.Xaml.Navigation;
 using WorkOrganizer.NavigationObjects;
 using MoneyLib;
 using static MoneyLib.MoneyCalculator;
+using WorkOrganizer.AppLogic;
 
 namespace WorkOrganizer
 {
@@ -26,28 +27,29 @@ namespace WorkOrganizer
         {
             this.InitializeComponent();
             var UISyncContext = TaskScheduler.FromCurrentSynchronizationContext();
-            if (!App.DB.IsLoaded)
-                Task.Run(() => App.DB.Load()).ContinueWith(tsk => AddWorkEventBars(), UISyncContext);
+
+            MainPageHandler.OnLoad(AddWorkEventBars, UISyncContext);
             /*if (App.DB != null)
                 TextBoxTest.Text = "" + App.DB.Houses.Count + App.DB.Owners.Count + App.DB.WorkEvents.Count;*/
         }
-        protected override void OnNavigatedTo(NavigationEventArgs e)
+        protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
-            if (e.Parameter.ToString() != "")
-            {
-                var Dt = (DateTime)e.Parameter;
-                DatePickerSelect.Date = Dt;
-                if (App.DB.IsLoaded)
-                    AddWorkEventBars();
-            }
+            await MainPageHandler.OnNavigatedTo(e, DatePickerSelect, AddWorkEventBars);
         }
 
-        private void AddWorkEventBars()
+        private async Task<bool> AddWorkEventBars()
         {
             ProgressRing.Visibility = Visibility.Collapsed;
             ScrollWorkEvents.Visibility = Visibility.Visible;
 
             StackWorkEvents.Children.Clear();
+
+            if (App.DB.WorkEvents == null)
+            {
+                return false;
+            }
+
+            await RefreshDate();
 
             foreach (var we in App.DB.WorkEvents.FindAll(w => w.Time.Day == DatePickerSelect.Date.Day))
             {
@@ -168,6 +170,7 @@ namespace WorkOrganizer
 
                 StackWorkEvents.Children.Add(MainGrid);
             }
+            return true;
         }
         private async void Delete_Click(object sender, RoutedEventArgs e)
         {
@@ -208,13 +211,18 @@ namespace WorkOrganizer
 
         private async void DatePickerSelect_DateChanged(object sender, DatePickerValueChangedEventArgs e)
         {
+            //await RefreshDate();
+            await AddWorkEventBars();
+        }
+
+        private async Task RefreshDate()
+        {
             if (App.DB.WorkEventsDate.Month != DatePickerSelect.Date.DateTime.Month ||
                 App.DB.WorkEventsDate.Year != DatePickerSelect.Date.DateTime.Year)
             {
                 App.DB.WorkEventsDate = DatePickerSelect.Date.DateTime;
                 await App.DB.LoadWorkEvents();
             }
-            AddWorkEventBars();
         }
 
         private void SwipeToMonth_Click(object sender, RoutedEventArgs e)
@@ -224,7 +232,7 @@ namespace WorkOrganizer
 
         private void Configs_Click(object sender, RoutedEventArgs e)
         {
-            Frame.Navigate(typeof(ConfigsPage));
+            Frame.Navigate(typeof(ConfigsPage), DatePickerSelect.Date.DateTime);
         }
     }
 }

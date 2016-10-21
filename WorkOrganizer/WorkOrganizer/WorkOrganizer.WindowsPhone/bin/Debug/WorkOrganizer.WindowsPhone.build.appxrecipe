@@ -1,0 +1,95 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Machine>DESKTOP-N2GI470</Machine>
+    <WindowsUser>Amara</WindowsUser>
+    <TargetPlatformIdentifier>WindowsPhoneApp</TargetPlatformIdentifier>
+    <TargetOsVersion>6.3</TargetOsVersion>
+    <TargetOsDescription>Windows Phone 8.1</TargetOsDescription>
+    <SolutionConfiguration>Debug|AnyCPU</SolutionConfiguration>
+    <PackageArchitecture>neutral</PackageArchitecture>
+    <PackageIdentityName>873ee4af-7ef5-4236-a9bd-21452e924806</PackageIdentityName>
+    <PackageIdentityPublisher>CN=APPA</PackageIdentityPublisher>
+    <IntermediateOutputPath>C:\APPA\Projectos\Proprios\WindowsPhone\WorkOrganizer\WorkOrganizer\WorkOrganizer\WorkOrganizer.WindowsPhone\obj\Debug\</IntermediateOutputPath>
+    <RemoteDeploymentType></RemoteDeploymentType>
+    <PackageRegistrationPath></PackageRegistrationPath>
+    <RemoveNonLayoutFiles>true</RemoveNonLayoutFiles>
+  </PropertyGroup>
+  <ItemGroup>
+    <AppXManifest Include="C:\APPA\Projectos\Proprios\WindowsPhone\WorkOrganizer\WorkOrganizer\WorkOrganizer\WorkOrganizer.WindowsPhone\bin\Debug\AppxManifest.xml">
+      <PackagePath>AppxManifest.xml</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+    </AppXManifest>
+  </ItemGroup>
+  <ItemGroup>
+    <AppxPackagedFile Include="C:\APPA\Projectos\Proprios\WindowsPhone\WorkOrganizer\WorkOrganizer\WorkOrganizer\WorkOrganizer.WindowsPhone\bin\Debug\WorkOrganizer.WindowsPhone.exe">
+      <PackagePath>WorkOrganizer.WindowsPhone.exe</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\APPA\Projectos\Proprios\WindowsPhone\WorkOrganizer\WorkOrganizer\Money\bin\Debug\Money.dll">
+      <PackagePath>Money.dll</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\APPA\Projectos\Proprios\WindowsPhone\WorkOrganizer\WorkOrganizer\WorkOrganizer\WorkOrganizer.WindowsPhone\Assets\Logo.scale-240.png">
+      <PackagePath>Assets\Logo.scale-240.png</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\APPA\Projectos\Proprios\WindowsPhone\WorkOrganizer\WorkOrganizer\WorkOrganizer\WorkOrganizer.WindowsPhone\Assets\SmallLogo.scale-240.png">
+      <PackagePath>Assets\SmallLogo.scale-240.png</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\APPA\Projectos\Proprios\WindowsPhone\WorkOrganizer\WorkOrganizer\WorkOrganizer\WorkOrganizer.WindowsPhone\Assets\SplashScreen.scale-240.png">
+      <PackagePath>Assets\SplashScreen.scale-240.png</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\APPA\Projectos\Proprios\WindowsPhone\WorkOrganizer\WorkOrganizer\WorkOrganizer\WorkOrganizer.WindowsPhone\Assets\Square71x71Logo.scale-240.png">
+      <PackagePath>Assets\Square71x71Logo.scale-240.png</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\APPA\Projectos\Proprios\WindowsPhone\WorkOrganizer\WorkOrganizer\WorkOrganizer\WorkOrganizer.WindowsPhone\Assets\StoreLogo.scale-240.png">
+      <PackagePath>Assets\StoreLogo.scale-240.png</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\APPA\Projectos\Proprios\WindowsPhone\WorkOrganizer\WorkOrganizer\WorkOrganizer\WorkOrganizer.WindowsPhone\Assets\WideLogo.scale-240.png">
+      <PackagePath>Assets\WideLogo.scale-240.png</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\APPA\Projectos\Proprios\WindowsPhone\WorkOrganizer\WorkOrganizer\WorkOrganizer\WorkOrganizer.WindowsPhone\bin\Debug\WorkOrganizer.WindowsPhone.xr.xml">
+      <PackagePath>WorkOrganizer.WindowsPhone.xr.xml</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\APPA\Projectos\Proprios\WindowsPhone\WorkOrganizer\WorkOrganizer\WorkOrganizer\WorkOrganizer.WindowsPhone\bin\Debug\App.xbf">
+      <PackagePath>App.xbf</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\APPA\Projectos\Proprios\WindowsPhone\WorkOrganizer\WorkOrganizer\WorkOrganizer\WorkOrganizer.WindowsPhone\bin\Debug\ConfigsPage.xbf">
+      <PackagePath>ConfigsPage.xbf</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\APPA\Projectos\Proprios\WindowsPhone\WorkOrganizer\WorkOrganizer\WorkOrganizer\WorkOrganizer.WindowsPhone\bin\Debug\HouseManagementPage.xbf">
+      <PackagePath>HouseManagementPage.xbf</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\APPA\Projectos\Proprios\WindowsPhone\WorkOrganizer\WorkOrganizer\WorkOrganizer\WorkOrganizer.WindowsPhone\bin\Debug\HousePage.xbf">
+      <PackagePath>HousePage.xbf</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\APPA\Projectos\Proprios\WindowsPhone\WorkOrganizer\WorkOrganizer\WorkOrganizer\WorkOrganizer.WindowsPhone\bin\Debug\MainPage.xbf">
+      <PackagePath>MainPage.xbf</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\APPA\Projectos\Proprios\WindowsPhone\WorkOrganizer\WorkOrganizer\WorkOrganizer\WorkOrganizer.WindowsPhone\bin\Debug\OwnerManagementPage.xbf">
+      <PackagePath>OwnerManagementPage.xbf</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\APPA\Projectos\Proprios\WindowsPhone\WorkOrganizer\WorkOrganizer\WorkOrganizer\WorkOrganizer.WindowsPhone\bin\Debug\OwnerPage.xbf">
+      <PackagePath>OwnerPage.xbf</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\APPA\Projectos\Proprios\WindowsPhone\WorkOrganizer\WorkOrganizer\WorkOrganizer\WorkOrganizer.WindowsPhone\bin\Debug\SummaryPage.xbf">
+      <PackagePath>SummaryPage.xbf</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\APPA\Projectos\Proprios\WindowsPhone\WorkOrganizer\WorkOrganizer\WorkOrganizer\WorkOrganizer.WindowsPhone\bin\Debug\WorkAnalyzerPage.xbf">
+      <PackagePath>WorkAnalyzerPage.xbf</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\APPA\Projectos\Proprios\WindowsPhone\WorkOrganizer\WorkOrganizer\WorkOrganizer\WorkOrganizer.WindowsPhone\bin\Debug\WorkEventPage.xbf">
+      <PackagePath>WorkEventPage.xbf</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\APPA\Projectos\Proprios\WindowsPhone\WorkOrganizer\WorkOrganizer\WorkOrganizer\WorkOrganizer.WindowsPhone\bin\Debug\resources.pri">
+      <PackagePath>resources.pri</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+    </AppxPackagedFile>
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+</Project>

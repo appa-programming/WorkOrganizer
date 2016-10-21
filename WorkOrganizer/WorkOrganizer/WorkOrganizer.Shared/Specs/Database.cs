@@ -21,7 +21,7 @@ namespace WorkOrganizer.Specs
         {
             get
             {
-                return Owners.FindAll(o => !o.IsInvisible);
+                return Owners != null ? Owners.FindAll(o => !o.IsInvisible) : null;
             }
             private set { }
         }
@@ -147,6 +147,8 @@ namespace WorkOrganizer.Specs
         }
         public async Task<DatabaseMessage> AddOwner(Owner owner)
         {
+            if (Owners == null)
+                Owners = new List<Owner>();
             if (Owners.Any(o => o.Name == owner.Name && !o.IsInvisible))
             {
                 return new DatabaseMessage(DatabaseMessageState.ERROR, "The Owner '" + owner.Name + "' already exists.");

@@ -21,6 +21,7 @@ namespace WorkOrganizer
     {
         bool IsFullyInitialized;
         Dictionary<int, List<WorkEvent>> WorkEventsInTheHousesThisMonth;
+        DateTime SaveDateFromOtherScreens;
 
         public WorkAnalyzerPage()
         {
@@ -37,13 +38,12 @@ namespace WorkOrganizer
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            var Dt = (DateTime)e.Parameter;
-            DatePickerMonthYear.Date = Dt;
+            SaveDateFromOtherScreens = (DateTime)e.Parameter;
         }
 
         private void ButtonGoBack_Click(object sender, RoutedEventArgs e)
         {
-            Frame.Navigate(typeof(MainPage), DatePickerMonthYear.Date.Date);
+            Frame.Navigate(typeof(MainPage), SaveDateFromOtherScreens);
         }
 
         private async void DatePickerMonthYear_DateChanged(object sender, DatePickerValueChangedEventArgs e)
@@ -93,7 +93,13 @@ namespace WorkOrganizer
 
         private void MakeOwnerList()
         {
+            if (App.DB.Owners == null)
+            {
+                return;
+            }
+
             List<Tuple<Owner, int, int>> DataNeededForPresentation = new List<Tuple<Owner, int, int>>();
+
             foreach (var owner in App.DB.Owners)
             {
                 List<House> OwnersHouses = App.DB.GetOwnersHouses(owner.IdOwner);
