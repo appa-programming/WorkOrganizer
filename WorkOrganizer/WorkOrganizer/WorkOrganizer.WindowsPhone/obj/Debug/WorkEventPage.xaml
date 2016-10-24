@@ -9,15 +9,14 @@
     <Grid Name="LayoutRoot"
           Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <Grid.RowDefinitions>
-            <!--Total = 9-->
-            <RowDefinition Height="1*"></RowDefinition>
-            <RowDefinition Height="1*"></RowDefinition>
-            <RowDefinition Height="1*"></RowDefinition>
-            <RowDefinition Height="1*"></RowDefinition>
-            <RowDefinition Height="1*"></RowDefinition>
-            <RowDefinition Height="1*"></RowDefinition>
-            <RowDefinition Height="1*"></RowDefinition>
-            <RowDefinition Height="1*"></RowDefinition>
+            <!--Total = 10 [20]-->
+            <RowDefinition Height="4*"></RowDefinition>
+            <RowDefinition Height="2*"></RowDefinition>
+            <RowDefinition Height="3*"></RowDefinition>
+            <RowDefinition Height="3*"></RowDefinition>
+            <RowDefinition Height="3*"></RowDefinition>
+            <RowDefinition Height="3*"></RowDefinition>
+            <RowDefinition Height="2*"></RowDefinition>
         </Grid.RowDefinitions>
         <TextBlock Name="WorkOrganizer"
                    Grid.Row="0"
@@ -27,17 +26,10 @@
                    FontWeight="Bold">
             Work Organizer
         </TextBlock>
-        <Button x:ConnectionId='1' Name="ButtonGoBack"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Center"
-                                          
-                Grid.Row="1">
-            Back
-        </Button>
         <StackPanel Orientation="Horizontal"
                     VerticalAlignment="Center"
                     HorizontalAlignment="Center"
-                    Grid.Row="2">
+                    Grid.Row="1">
             <TextBlock Name="TextDate"
                        Style="{ StaticResource MyTextBoxStyle }">Date</TextBlock>
             <DatePicker Name="DatePicker"
@@ -49,7 +41,7 @@
                         Time="16:0:0"></TimePicker>
         </StackPanel>
         <Grid VerticalAlignment="Center"
-              Grid.Row="3"
+              Grid.Row="2"
               HorizontalAlignment="Stretch">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"></ColumnDefinition>
@@ -75,7 +67,6 @@
                     <ColumnDefinition Width="*"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
                 <TextBlock Name="TextNotes"
-                           Margin="40,0,10,0"
                            Style="{ StaticResource MyTextBoxStyle }">Notes:</TextBlock>
                 <TextBox Name="TextBoxNotes"
                          VerticalAlignment="Center"
@@ -89,7 +80,7 @@
         </Grid>
         <StackPanel Orientation="Horizontal"
                     VerticalAlignment="Center"
-                    Grid.Row="4"
+                    Grid.Row="3"
                     HorizontalAlignment="Center">
             <StackPanel Orientation="Vertical"
                         VerticalAlignment="Center"
@@ -119,44 +110,49 @@
                           ItemsSource="{Binding}"
                           SelectedItem="{Binding Path=IndexValue}"></ComboBox>
             </StackPanel>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal"
+                    VerticalAlignment="Center"
+                    Grid.Row="4"
+                    HorizontalAlignment="Center">
             <StackPanel Orientation="Vertical"
-                        VerticalAlignment="Center"
-                        HorizontalAlignment="Center"
-                        Width="250"
-                        Margin="20,0,0,0">
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Center"
+                            Width="250"
+                            Margin="20,0,0,0">
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Name="TextLaundry"
-                               Style="{ StaticResource MyTextBoxStyle }"
-                               HorizontalAlignment="Center">Laundry</TextBlock>
+                                   Style="{ StaticResource MyTextBoxStyle }"
+                                   HorizontalAlignment="Center">Laundry</TextBlock>
                     <Button x:ConnectionId='4' Name="ButtonUpdateLaundry"
-                            Visibility="Collapsed"
-                                                             >Update €/Kg</Button>
+                                Visibility="Collapsed"
+                                                                 >Update €/Kg</Button>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <TextBox x:ConnectionId='3' Name="TextBoxLaundry"
-                                                         
-                             IsEnabled="False"></TextBox>
+                                                             
+                                 IsEnabled="False"></TextBox>
                     <TextBlock Text="Kgs"
-                               HorizontalAlignment="Center"
-                               VerticalAlignment="Center"
-                               Margin="5,0,10,0"></TextBlock>
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"
+                                   Margin="5,0,10,0"></TextBlock>
                     <TextBox Name="TextBoxMoneyUnits"
-                             HorizontalContentAlignment="Right"
-                             HorizontalAlignment="Right"
-                             TextAlignment="Right"
-                             VerticalAlignment="Center"
-                             Width="50"
-                             IsEnabled="False"
-                             Text="0"></TextBox>
+                                 HorizontalContentAlignment="Right"
+                                 HorizontalAlignment="Right"
+                                 TextAlignment="Right"
+                                 VerticalAlignment="Center"
+                                 Width="50"
+                                 IsEnabled="False"
+                                 Text="0"></TextBox>
                     <TextBlock Text="€"
-                               Width="10"
-                               VerticalAlignment="Center"
-                               HorizontalAlignment="Center"
-                               Margin="5,0,0,0"></TextBlock>
+                                   Width="10"
+                                   VerticalAlignment="Center"
+                                   HorizontalAlignment="Center"
+                                   Margin="5,0,0,0"></TextBlock>
                     <TextBox Name="TextBoxMoneyCents"
-                             Width="50"
-                             IsEnabled="False"
-                             Text="00"></TextBox>
+                                 Width="50"
+                                 IsEnabled="False"
+                                 Text="00"></TextBox>
                 </StackPanel>
             </StackPanel>
         </StackPanel>
@@ -200,10 +196,17 @@
                    Foreground="Red"
                    FontWeight="Bold"
                    Visibility="Collapsed"
-                   Grid.Row="6"></TextBlock>
+                   Grid.Row="5"></TextBlock>
+        <Button x:ConnectionId='1' Name="ButtonGoBack"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Center"
+                                          
+                Grid.Row="6">
+            Back
+        </Button>
         <Button x:ConnectionId='2' Name="ButtonCreateOrEditEvent"
-                Grid.Row="7"
-                HorizontalAlignment="Center"
+                Grid.Row="6"
+                HorizontalAlignment="Right"
                 Height="70"
                 Width="200"
                 FontSize="26.667"

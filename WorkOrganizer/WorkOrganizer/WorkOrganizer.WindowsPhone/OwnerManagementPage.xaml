@@ -10,7 +10,8 @@
     <Grid Name="LayoutRoot"
           Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <Grid.RowDefinitions>
-            <RowDefinition Height="1*"></RowDefinition>
+            <!--Total = 10-->
+            <RowDefinition Height="2*"></RowDefinition>
             <RowDefinition Height="1*"></RowDefinition>
             <RowDefinition Height="6*"></RowDefinition>
             <RowDefinition Height="1*"></RowDefinition>
@@ -28,7 +29,7 @@
                 VerticalAlignment="Center"
                 Click="ButtonGoBack_Click"
                 Grid.Row="1">
-            "Swipe Back"
+            Houses
         </Button>
         <TextBlock Name="TitleOwners"
                    Style="{ StaticResource TitleTextBlockStyle }"
@@ -47,7 +48,7 @@
             </ScrollViewer>
         </Grid>
         <Button Name="ButtonAddOwner"
-                HorizontalAlignment="Center"
+                HorizontalAlignment="Right"
                 Height="70"
                 Width="200"
                 FontSize="26.667"

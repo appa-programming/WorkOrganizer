@@ -10,11 +10,9 @@
     <Grid Name="LayoutRoot"
           Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <Grid.RowDefinitions>
-            <!--Total = 9-->
-            <RowDefinition Height="1*"></RowDefinition>
-            <RowDefinition Height="1*"></RowDefinition>
-            <RowDefinition Height="4*"></RowDefinition>
-            <RowDefinition Height="1*"></RowDefinition>
+            <!--Total = 10-->
+            <RowDefinition Height="2*"></RowDefinition>
+            <RowDefinition Height="7*"></RowDefinition>
             <RowDefinition Height="1*"></RowDefinition>
         </Grid.RowDefinitions>
         <TextBlock Name="WorkOrganizer"
@@ -25,16 +23,9 @@
                    FontWeight="Bold">
             Work Organizer
         </TextBlock>
-        <Button x:ConnectionId='1' Name="ButtonGoBack"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Center"
-                                          
-                Grid.Row="1">
-            Back
-        </Button>
         <StackPanel Orientation="Vertical"
                     VerticalAlignment="Center"
-                    Grid.Row="2">
+                    Grid.Row="1">
             <TextBlock x:Name="TextName"
                        HorizontalAlignment="Center"
                        Style="{ StaticResource MyTextBoxStyle }">Name:</TextBlock>
@@ -87,10 +78,17 @@
                    Foreground="Red"
                    FontWeight="Bold"
                    Visibility="Collapsed"
-                   Grid.Row="3"></TextBlock>
+                   Grid.Row="2"></TextBlock>
+        <Button x:ConnectionId='1' Name="ButtonGoBack"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Center"
+                                          
+                Grid.Row="3">
+            Back
+        </Button>
         <Button x:ConnectionId='2' Name="ButtonCreateOrEditOwner"
-                Grid.Row="4"
-                HorizontalAlignment="Center"
+                Grid.Row="2"
+                HorizontalAlignment="Right"
                 Height="70"
                 Width="200"
                 FontSize="26.667"

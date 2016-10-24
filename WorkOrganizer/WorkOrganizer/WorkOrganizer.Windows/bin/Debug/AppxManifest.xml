@@ -22,8 +22,9 @@
   </Resources>
   <Applications>
     <Application Id="App" Executable="WorkOrganizer.Windows.exe" EntryPoint="WorkOrganizer.Windows.App">
-      <m2:VisualElements DisplayName="WorkOrganizer.Windows" Square150x150Logo="Assets\Logo.png" Square30x30Logo="Assets\SmallLogo.png" Description="WorkOrganizer.Windows" ForegroundText="light" BackgroundColor="#464646">
+      <m2:VisualElements DisplayName="WorkOrganizer" Square150x150Logo="Assets\Logo.png" Square30x30Logo="Assets\SmallLogo.png" Description="WorkOrganizer.Windows" ForegroundText="light" BackgroundColor="#464646">
         <m2:SplashScreen Image="Assets\SplashScreen.png" />
+        <m2:ApplicationView MinWidth="width320" />
       </m2:VisualElements>
     </Application>
   </Applications>

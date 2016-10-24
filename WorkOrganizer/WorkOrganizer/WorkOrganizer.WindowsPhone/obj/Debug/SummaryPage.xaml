@@ -9,7 +9,8 @@
     <Grid Name="LayoutRoot"
           Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <Grid.RowDefinitions>
-            <RowDefinition Height="1*"></RowDefinition>
+            <!--Total = 10-->
+            <RowDefinition Height="2*"></RowDefinition>
             <RowDefinition Height="1*"></RowDefinition>
             <RowDefinition Height="6*"></RowDefinition>
             <RowDefinition Height="1*"></RowDefinition>
@@ -22,20 +23,13 @@
                    FontWeight="Bold">
             Work Organizer
         </TextBlock>
-        <Button x:ConnectionId='1' Name="ButtonGoBack"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Center"
-                                          
-                Grid.Row="1">
-            "Swipe Back"
-        </Button>
         <TextBlock Name="TitleSummary"
                    Style="{ StaticResource TitleTextBlockStyle }"
                    HorizontalAlignment="Center"
                    VerticalAlignment="Center"
                    FontSize="26.667"
                    Grid.Row="1">Summary</TextBlock>
-        <ComboBox x:ConnectionId='2' Name="ComboType"
+        <ComboBox x:ConnectionId='1' Name="ComboType"
                   SelectedIndex="0"
                   HorizontalAlignment="Right"
                   VerticalAlignment="Center"
@@ -50,9 +44,9 @@
                  TextWrapping="Wrap"
                  TextAlignment="Justify"
                  Grid.Row="2"></TextBox>
-        <Button x:ConnectionId='3' Name="ButtonSendEmail"
+        <Button x:ConnectionId='2' Name="ButtonSendEmail"
                 Grid.Row="3"
-                HorizontalAlignment="Center"
+                HorizontalAlignment="Right"
                 Height="70"
                 Width="200"
                 FontSize="26.667"
@@ -63,6 +57,13 @@
                 Visibility="Collapsed"
                                              >
             Send Email
+        </Button>
+        <Button x:ConnectionId='3' Name="ButtonGoBack"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Center"
+                                          
+                Grid.Row="3">
+            Back
         </Button>
     </Grid>
 </Page>

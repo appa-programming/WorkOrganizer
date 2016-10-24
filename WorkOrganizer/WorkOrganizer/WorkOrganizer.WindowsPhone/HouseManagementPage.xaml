@@ -9,7 +9,8 @@
     <Grid Name="LayoutRoot"
           Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <Grid.RowDefinitions>
-            <RowDefinition Height="1*"></RowDefinition>
+            <!--Total = 10-->
+            <RowDefinition Height="2*"></RowDefinition>
             <RowDefinition Height="1*"></RowDefinition>
             <RowDefinition Height="6*"></RowDefinition>
             <RowDefinition Height="1*"></RowDefinition>
@@ -27,7 +28,7 @@
                 VerticalAlignment="Center"
                 Click="ButtonGoBack_Click"
                 Grid.Row="1">
-            "Swipe Back"
+            Events
         </Button>
         <TextBlock Name="TitleHouses"
                    Style="{ StaticResource TitleTextBlockStyle }"
@@ -39,7 +40,7 @@
                 Grid.Row="1"
                 Click="SwipeToOwner_Click"
                 HorizontalAlignment="Right">
-            "Swipe Right"
+            Owners
         </Button>
         <Grid Grid.Row="2">
             <ProgressRing Name="ProgressRing"

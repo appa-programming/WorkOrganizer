@@ -9,7 +9,8 @@
     <Grid Name="LayoutRoot"
           Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <Grid.RowDefinitions>
-            <RowDefinition Height="1*"></RowDefinition>
+            <!--Total = 10-->
+            <RowDefinition Height="2*"></RowDefinition>
             <RowDefinition Height="1*"></RowDefinition>
             <RowDefinition Height="6*"></RowDefinition>
             <RowDefinition Height="1*"></RowDefinition>
@@ -23,21 +24,21 @@
             Work Organizer
         </TextBlock>
         <Button Name="Configs"
-                Grid.Row="0"
+                Grid.Row="1"
                 Click="Configs_Click"
-                HorizontalAlignment="Right"
-                Margin="0,0,30,0">
+                HorizontalAlignment="Left">
             Configs
         </Button>
         <DatePicker Name="DatePickerSelect"
                     HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
                     Grid.Row="1"
                     DateChanged="DatePickerSelect_DateChanged"></DatePicker>
         <Button Name="SwipeToMonth"
                 Grid.Row="1"
                 Click="SwipeToMonth_Click"
                 HorizontalAlignment="Right">
-            "Swipe Right"
+            Events
         </Button>
         <Grid Grid.Row="2">
             <ProgressRing Name="ProgressRing"
@@ -51,7 +52,7 @@
         </Grid>
         <Button Name="ButtonAddEvent"
                 Grid.Row="3"
-                HorizontalAlignment="Center"
+                HorizontalAlignment="Right"
                 Height="70"
                 Width="200"
                 FontSize="26.667"

@@ -154,7 +154,6 @@
       <RootProperty Name="GroupName" />
       <RootProperty Name="IsChecked" />
       <RootProperty Name="Content" />
-      <RootProperty Name="Margin" />
       <RootEvent Name="Checked" />
     </RootType>
     <RootType FullName="WorkOrganizer.WorkAnalyzerPage" />

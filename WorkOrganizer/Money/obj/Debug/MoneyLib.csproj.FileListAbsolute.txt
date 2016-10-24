@@ -2,3 +2,4 @@ C:\APPA\Projectos\Proprios\WindowsPhone\WorkOrganizer\WorkOrganizer\Money\bin\De
 C:\APPA\Projectos\Proprios\WindowsPhone\WorkOrganizer\WorkOrganizer\Money\bin\Debug\Money.pdb
 C:\APPA\Projectos\Proprios\WindowsPhone\WorkOrganizer\WorkOrganizer\Money\obj\Debug\Money.dll
 C:\APPA\Projectos\Proprios\WindowsPhone\WorkOrganizer\WorkOrganizer\Money\obj\Debug\Money.pdb
+C:\APPA\Projectos\Proprios\WindowsPhone\WorkOrganizer\WorkOrganizer\Money\obj\Debug\MoneyLib.csprojResolveAssemblyReference.cache
